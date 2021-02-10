@@ -12,6 +12,10 @@ import (
 	"time"
 )
 
+const (
+	NewsImagesDirectory  = `images/news/%s_%s`
+)
+
 func getNewsImg(c *gin.Context) string {
 	img, err := c.FormFile("img")
 	if err != nil {
@@ -24,7 +28,7 @@ func getNewsImg(c *gin.Context) string {
 
 	timeSign := fmt.Sprintf("%d",time.Now().UnixNano())
 
-	imgPath := fmt.Sprintf("images/resumes/%s_%s", timeSign, img.Filename)
+	imgPath := fmt.Sprintf(NewsImagesDirectory, timeSign, img.Filename)
 
 	file, err := os.Create(imgPath)
 	if err != nil {
