@@ -12,19 +12,24 @@ import (
 	"time"
 )
 
-func getImg(c *gin.Context) string {
+const (
+	CoursesImagesDirectory  = `images/courses/%s_%s`
+)
+
+func getNewCourseImg(c *gin.Context) string {
 	img, err := c.FormFile("img")
 	if err != nil {
 		log.Println("Error while receiving multipart form. error is", err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{
-			"reason" : err.Error(),
+			"message" : err.Error(),
+			"status" : "bad",
 		})
 		return ""
 	}
 
 	timeSign := fmt.Sprintf("%d",time.Now().UnixNano())
 
-	imgPath := fmt.Sprintf("images/resumes/%s_%s", timeSign, img.Filename)
+	imgPath := fmt.Sprintf(CoursesImagesDirectory, timeSign, img.Filename)
 
 	file, err := os.Create(imgPath)
 	if err != nil {
@@ -39,14 +44,15 @@ func getImg(c *gin.Context) string {
 	return imgPath
 }
 
-func getMainJson(c *gin.Context) models.Courses {
+func geNewCourseMainJson(c *gin.Context) models.Courses {
 	var Course models.Courses
 
 	form, err := c.MultipartForm()
 	if err != nil {
 		log.Println("Error while receiving multipart form. error is", err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{
-			"reason" : err.Error(),
+			"message" : err.Error(),
+			"status" : "bad",
 		})
 		return models.Courses{}
 	}
@@ -58,7 +64,8 @@ func getMainJson(c *gin.Context) models.Courses {
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"reason": "wrong request body",
+			"message" : err.Error(),
+			"status" : "bad",
 		})
 		log.Println("json unmarshal error:", err.Error())
 		return models.Courses{}
@@ -67,39 +74,43 @@ func getMainJson(c *gin.Context) models.Courses {
 	return Course
 }
 
-func (h *Handler) newCourse (c *gin.Context) {
-	//TODO:checking for being admin
+func (h *Handler) createCourse (c *gin.Context) {
+	_ , err := getAdminId(c) //TODO: (adminId) check id
+	if err != nil {
+		return
+	}
 
-	imgPath := getImg(c)
-	course := getMainJson(c)
+	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
+	if err != nil {
+		return
+	}
+
+	imgPath := getNewCourseImg(c)
+	course := geNewCourseMainJson(c)
 	course.Img = imgPath
-
-	//if err := c.BindJSON(&course); err != nil {
-	//	newErrorResponse(c, http.StatusBadRequest, err.Error())
-	//	return
-	//}
 
 	id, err := h.services.Courses.CreateCourse(course)
 
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"id" : id,
+		"status": "ok",
 	})
 }
 
 func (h *Handler) getCourseById (c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
 		return
 	}
 
 	course, err := h.services.Courses.GetCourseById(id)
 	if err != nil {
-		newErrorResponse(c, http.StatusNotFound, err.Error())
+		newErrorResponse(c, http.StatusNotFound, "bad", err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, course)

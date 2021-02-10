@@ -4,6 +4,13 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
+)
+
+const (
+	adminAuthorizationHeader = "Authorization"
+	adminIdCtx = "adminId"
+	adminLevelCtx = "adminLevel"
 )
 
 func (h *Handler) Cors(c *gin.Context) {
@@ -20,16 +27,52 @@ func (h *Handler) Cors(c *gin.Context) {
 	//c.Header("Accept", "*/*")
 }
 
-func getUserId(c *gin.Context) (int, error) {
-	id, ok := c.Get("id")
+func (h *Handler) adminIdentity(c *gin.Context) {
+	header := c.GetHeader(adminAuthorizationHeader)
+	if header == "" {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","empty auth header")
+		return
+	}
+
+	headerParts := strings.Split(header, " ")
+	if len(headerParts) != 2 {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid auth header")
+		return
+	}
+
+	adminId, adminLevel, err := h.services.Admin.ParseToken(headerParts[1])
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad", err.Error())
+	}
+	c.Set(adminIdCtx, adminId)
+	c.Set(adminLevelCtx, adminLevel)
+}
+
+func getAdminId(c *gin.Context) (int, error) {
+	adminId, ok := c.Get(adminIdCtx)
 	if !ok {
-		newErrorResponse(c, http.StatusInternalServerError, "user id not found")
+		newErrorResponse(c, http.StatusInternalServerError, "bad","user id not found")
 		return 0, errors.New("user id not found")
 	}
 
-	idInt, ok := id.(int)
+	idInt, ok := adminId.(int)
 	if !ok {
-		newErrorResponse(c, http.StatusInternalServerError, "user id is of invalid type")
+		newErrorResponse(c, http.StatusInternalServerError, "bad","user id is of invalid type")
+		return 0, errors.New("user id is of invalid type")
+	}
+	return idInt, nil
+}
+
+func getAdminLevel(c *gin.Context) (int, error) {
+	adminLevel, ok := c.Get(adminLevelCtx)
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "bad","user id not found")
+		return 0, errors.New("user id not found")
+	}
+
+	idInt, ok := adminLevel.(int)
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "bad","user id is of invalid type")
 		return 0, errors.New("user id is of invalid type")
 	}
 	return idInt, nil

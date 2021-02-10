@@ -12,18 +12,19 @@ type MainPage interface {
 }
 
 type Courses interface {
-	GetCourseById (id int) (newCourse models.Courses, err error)
 	CreateCourse(courses models.Courses) (int, error)
+	GetCourseById (id int) (newCourse models.Courses, err error)
 }
 
 type News interface {
+	CreateNews(news models.News) (int, error)
 	GetNewsByID (int) (models.News, error)
 }
 
 type Admin interface {
 	CreateAdmin(admin models.Admin) (int, error)
 	GenerateToken(username, password string) (string, error)
-	//ParseToken(token string) (int, error)
+	ParseToken(accessToken string) (int, int, error)
 }
 
 type Service struct {

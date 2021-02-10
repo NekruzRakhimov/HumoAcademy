@@ -36,16 +36,20 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			news.GET("/:id", h.getNewsById)
 		}
 
-		admin := api.Group("/admin")
+		admin := api.Group("/admin",)
 		{
 			adminAuth := admin.Group("/auth")
 			{
 				adminAuth.POST("/sign-up", h.adminSignUp)
 				adminAuth.POST("/sign-in", h.adminSignIn)
 			}
-			courses := admin.Group("/courses")
+			courses := admin.Group("/courses", h.adminIdentity)
 			{
-				courses.POST("/new-course", h.newCourse)
+				courses.POST("/create-course", h.createCourse)
+			}
+			news := admin.Group("/news", h.adminIdentity)
+			{
+				news.POST("/create-news", h.createNews)
 			}
 		}
 	}

@@ -14,7 +14,8 @@ type statusResponse struct {
 	Message string `json:"message"`
 }
 
-func newErrorResponse(c *gin.Context, statusCode int, message string) {
-	log.Printf(message)
-	c.AbortWithStatusJSON(statusCode, errorResponse{message})
+func newErrorResponse(c *gin.Context, statusCode int, status, message string) {
+	log.Printf(message, "\n")
+	log.Printf(status)
+	c.AbortWithStatusJSON(statusCode, statusResponse{status, message})
 }

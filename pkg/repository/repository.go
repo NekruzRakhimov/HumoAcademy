@@ -16,6 +16,7 @@ type Courses interface {
 }
 
 type News interface {
+	CreateNews(news models.News) (int, error)
 	GetNewsByID (id int) (models.News, error)
 }
 
