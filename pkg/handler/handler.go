@@ -21,6 +21,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		main.GET("/", h.getAll)
 		main.POST("/", h.addUserForNews)
+		main.GET("/getImg/:f1/:f2/:img", h.getImg)
 	}
 
 	api := router.Group("/api")

@@ -77,3 +77,11 @@ func getAdminLevel(c *gin.Context) (int, error) {
 	}
 	return idInt, nil
 }
+
+func (h *Handler) getImg(c *gin.Context) {
+	imgPath := c.Param("img")
+	f1 := c.Param("f1")
+	f2 := c.Param("f2")
+
+	c.File("./" + f1 + "/" + f2 + "/" + imgPath)
+}

@@ -16,7 +16,7 @@ const (
 	CoursesImagesDirectory  = `images/courses/%s_%s`
 )
 
-func getNewCourseImg(c *gin.Context) string {
+func getNewCourseImg(c *gin.Context) (string, error) {
 	img, err := c.FormFile("img")
 	if err != nil {
 		log.Println("Error while receiving multipart form. error is", err.Error())
@@ -24,7 +24,7 @@ func getNewCourseImg(c *gin.Context) string {
 			"message" : err.Error(),
 			"status" : "bad",
 		})
-		return ""
+		return "", err
 	}
 
 	timeSign := fmt.Sprintf("%d",time.Now().UnixNano())
@@ -34,17 +34,17 @@ func getNewCourseImg(c *gin.Context) string {
 	file, err := os.Create(imgPath)
 	if err != nil {
 		fmt.Println("Error while creating file for image.", err.Error())
-		return ""
+		return "", err
 	}
 	err = c.SaveUploadedFile(img, file.Name())
 	if err != nil {
 		fmt.Println("Error while saving the image.", err.Error())
-		return ""
+		return "", err
 	}
-	return imgPath
+	return imgPath, nil
 }
 
-func geNewCourseMainJson(c *gin.Context) models.Courses {
+func geNewCourseMainJson(c *gin.Context) (models.Courses, error) {
 	var Course models.Courses
 
 	form, err := c.MultipartForm()
@@ -54,7 +54,7 @@ func geNewCourseMainJson(c *gin.Context) models.Courses {
 			"message" : err.Error(),
 			"status" : "bad",
 		})
-		return models.Courses{}
+		return models.Courses{}, err
 	}
 
 	mainJson := form.Value["main_json"]
@@ -68,10 +68,10 @@ func geNewCourseMainJson(c *gin.Context) models.Courses {
 			"status" : "bad",
 		})
 		log.Println("json unmarshal error:", err.Error())
-		return models.Courses{}
+		return models.Courses{}, err
 	}
 
-	return Course
+	return Course, nil
 }
 
 func (h *Handler) createCourse (c *gin.Context) {
@@ -85,8 +85,18 @@ func (h *Handler) createCourse (c *gin.Context) {
 		return
 	}
 
-	imgPath := getNewCourseImg(c)
-	course := geNewCourseMainJson(c)
+	imgPath, err := getNewCourseImg(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
+	course, err := geNewCourseMainJson(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
 	course.Img = imgPath
 
 	id, err := h.services.Courses.CreateCourse(course)
