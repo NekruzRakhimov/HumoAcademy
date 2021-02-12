@@ -28,12 +28,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		courses := api.Group("/courses")
 		{
+			courses.GET("/", h.GetAllCourses)
 			courses.GET("/:id", h.getCourseById)
 			courses.POST("/:id", h.registerToCourse)
 		}
 
 		news := api.Group("/news")
 		{
+			news.GET("/", h.GetAllNews)
 			news.GET("/:id", h.getNewsById)
 		}
 

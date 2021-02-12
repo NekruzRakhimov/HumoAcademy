@@ -71,6 +71,19 @@ func getNewsMainJson(c *gin.Context) models.News {
 	return News
 }
 
+func (h *Handler) GetAllNews (c *gin.Context) {
+
+	news, err := h.services.News.GetAllNews()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError,"bad" ,err.Error())
+		return
+	}
+	if news == nil {
+		news = []models.News{}
+	}
+	c.JSON(http.StatusOK, news)
+}
+
 func (h *Handler) createNews (c *gin.Context) {
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {

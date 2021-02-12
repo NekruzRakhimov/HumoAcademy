@@ -14,11 +14,13 @@ type MainPage interface {
 type Courses interface {
 	CreateCourse(courses models.Courses) (int, error)
 	GetCourseById (id int) (newCourse models.Courses, err error)
+	GetAllCourses () ([]models.Courses, error)
 }
 
 type News interface {
 	CreateNews(news models.News) (int, error)
 	GetNewsByID (int) (models.News, error)
+	GetAllNews () ([]models.News, error)
 }
 
 type Admin interface {

@@ -24,3 +24,7 @@ func (s *CoursesService) CreateCourse(course models.Courses) (int, error) {
 func (s *CoursesService) GetCourseById (id int) (Course models.Courses, err error) {
 	return s.repo.GetCourseById(id)
 }
+
+func (s *CoursesService) GetAllCourses () ([]models.Courses, error) {
+	return s.repo.GetAllCourses()
+}

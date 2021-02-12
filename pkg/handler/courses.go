@@ -126,6 +126,19 @@ func (h *Handler) getCourseById (c *gin.Context) {
 	c.JSON(http.StatusOK, course)
 }
 
+func (h *Handler) GetAllCourses (c *gin.Context) {
+
+	courses, err := h.services.Courses.GetAllCourses()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+	if courses == nil {
+		courses = []models.Courses{}
+	}
+	c.JSON(http.StatusOK, courses)
+}
+
 func (h *Handler) registerToCourse (c *gin.Context) {
 
 }

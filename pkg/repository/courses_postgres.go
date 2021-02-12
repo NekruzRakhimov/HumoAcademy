@@ -36,3 +36,12 @@ func (r *CoursesPostgres) GetCourseById (id int) (models.Courses, error) {
 	return course, nil
 }
 
+func (r *CoursesPostgres) GetAllCourses() ([]models.Courses, error) {
+	var courses []models.Courses
+	query := fmt.Sprintf("SELECT id, title, img, description, plans, course_durance, status FROM courses")
+	err := r.db.Select(&courses, query)
+	if err != nil {
+		return []models.Courses{}, err
+	}
+	return courses, err
+}

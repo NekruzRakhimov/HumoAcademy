@@ -31,3 +31,13 @@ func (r *NewsPostgres) GetNewsByID (id int) (models.News, error) {
 	err := r.db.Get(&news, query, id)
 	return news, err
 }
+
+func (r *NewsPostgres) GetAllNews() ([]models.News, error) {
+	var courses []models.News
+	query := fmt.Sprintf("SELECT id, title, short_desc, expire_at, img, full_desc, status FROM news")
+	err := r.db.Select(&courses, query)
+	if err != nil {
+		return []models.News{}, err
+	}
+	return courses, err
+}
