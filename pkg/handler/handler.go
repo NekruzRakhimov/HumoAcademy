@@ -28,31 +28,29 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		courses := api.Group("/courses")
 		{
-			courses.GET("/", h.GetAllCourses)
+			courses.GET("/", h.getAllCourses)
 			courses.GET("/:id", h.getCourseById)
 			courses.POST("/:id", h.registerToCourse)
 		}
 
 		news := api.Group("/news")
 		{
-			news.GET("/", h.GetAllNews)
+			news.GET("/", h.getAllNews)
 			news.GET("/:id", h.getNewsById)
 		}
 
 		admin := api.Group("/admin",)
 		{
-			adminAuth := admin.Group("/auth")
-			{
-				adminAuth.POST("/sign-up", h.adminSignUp)
-				adminAuth.POST("/sign-in", h.adminSignIn)
-			}
+			admin.POST("/sign-in", h.adminSignIn)
 			courses := admin.Group("/courses", h.adminIdentity)
 			{
-				courses.POST("/create-course", h.createCourse)
+				courses.POST("/", h.createCourse)
+				courses.PUT("/:id", h.editCourse)
+				courses.DELETE("/:id", h.deleteCourse)
 			}
 			news := admin.Group("/news", h.adminIdentity)
 			{
-				news.POST("/create-news", h.createNews)
+				news.POST("/", h.createNews)
 			}
 		}
 	}

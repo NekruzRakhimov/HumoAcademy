@@ -20,10 +20,6 @@ func getNewCourseImg(c *gin.Context) (string, error) {
 	img, err := c.FormFile("img")
 	if err != nil {
 		log.Println("Error while receiving multipart form. error is", err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message" : err.Error(),
-			"status" : "bad",
-		})
 		return "", err
 	}
 
@@ -44,29 +40,19 @@ func getNewCourseImg(c *gin.Context) (string, error) {
 	return imgPath, nil
 }
 
-func geNewCourseMainJson(c *gin.Context) (models.Courses, error) {
+func getNewCourseMainJson(c *gin.Context) (models.Courses, error) {
 	var Course models.Courses
 
 	form, err := c.MultipartForm()
 	if err != nil {
 		log.Println("Error while receiving multipart form. error is", err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message" : err.Error(),
-			"status" : "bad",
-		})
 		return models.Courses{}, err
 	}
 
 	mainJson := form.Value["main_json"]
-	log.Println("main_json", mainJson)
 
 	err = json.Unmarshal([]byte(mainJson[0]), &Course)
-
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message" : err.Error(),
-			"status" : "bad",
-		})
 		log.Println("json unmarshal error:", err.Error())
 		return models.Courses{}, err
 	}
@@ -77,11 +63,13 @@ func geNewCourseMainJson(c *gin.Context) (models.Courses, error) {
 func (h *Handler) createCourse (c *gin.Context) {
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
 		return
 	}
 
 	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
 	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
 		return
 	}
 
@@ -91,7 +79,7 @@ func (h *Handler) createCourse (c *gin.Context) {
 		return
 	}
 
-	course, err := geNewCourseMainJson(c)
+	course, err := getNewCourseMainJson(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
@@ -126,7 +114,7 @@ func (h *Handler) getCourseById (c *gin.Context) {
 	c.JSON(http.StatusOK, course)
 }
 
-func (h *Handler) GetAllCourses (c *gin.Context) {
+func (h *Handler) getAllCourses (c *gin.Context) {
 
 	courses, err := h.services.Courses.GetAllCourses()
 	if err != nil {
@@ -137,6 +125,80 @@ func (h *Handler) GetAllCourses (c *gin.Context) {
 		courses = []models.Courses{}
 	}
 	c.JSON(http.StatusOK, courses)
+}
+
+func (h *Handler) deleteCourse(c *gin.Context){
+	_ , err := getAdminId(c) //TODO: (adminId) check id
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		return
+	}
+
+	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		return
+	}
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+		return
+	}
+
+	err = h.services.Courses.DeleteCourse(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"status": "ok",
+		"message":"course was successfully deleted",
+	})
+}
+
+func (h *Handler) editCourse (c *gin.Context) {
+	_ , err := getAdminId(c) //TODO: (adminId) check id
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		return
+	}
+
+	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		return
+	}
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+		return
+	}
+
+	imgPath, err := getNewCourseImg(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
+	course, err := getNewCourseMainJson(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
+	course.Img = imgPath
+	err = h.services.Courses.EditCourse(id, course)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"status": "ok",
+		"message": "course was successfully updated",
+	})
 }
 
 func (h *Handler) registerToCourse (c *gin.Context) {

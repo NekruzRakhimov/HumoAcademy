@@ -12,8 +12,10 @@ type MainPage interface {
 
 type Courses interface {
 	CreateCourse(course models.Courses) (int, error)
+	EditCourse(id int, course models.Courses) error
 	GetCourseById (int) (models.Courses, error)
 	GetAllCourses() ([]models.Courses, error)
+	DeleteCourse (id int) error
 
 }
 

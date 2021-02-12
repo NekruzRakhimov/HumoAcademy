@@ -7,7 +7,7 @@ type Courses struct {
 	Description string `json:"description"`
 	Plans string `json:"plans"`
 	CourseDurance int `json:"course_durance" db:"course_durance"`
-	Status int `json:"status"`
+	Status string `json:"status"`
 }
 
 type MiniCourses struct {

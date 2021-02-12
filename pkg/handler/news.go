@@ -71,7 +71,7 @@ func getNewsMainJson(c *gin.Context) models.News {
 	return News
 }
 
-func (h *Handler) GetAllNews (c *gin.Context) {
+func (h *Handler) getAllNews (c *gin.Context) {
 
 	news, err := h.services.News.GetAllNews()
 	if err != nil {
