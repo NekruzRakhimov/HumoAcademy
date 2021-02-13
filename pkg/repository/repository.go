@@ -23,6 +23,7 @@ type News interface {
 	CreateNews(news models.News) (int, error)
 	GetNewsByID (id int) (models.News, error)
 	GetAllNews() ([]models.News, error)
+	EditNews(id int, news models.News) error
 	DeleteNews (id int) error
 }
 
@@ -31,11 +32,16 @@ type Admin interface {
 	GetAdmin(username, password string) (models.Admin, error)
 }
 
+type User interface {
+	GetAllSubscribedUsers() ([]string, error)
+}
+
 type Repository struct {
 	MainPage
 	Courses
 	News
 	Admin
+	User
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -44,5 +50,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		Courses: NewCoursesPostgres(db),
 		News: NewNewsPostgres(db),
 		Admin: NewAdminPostgres(db),
+		User: NewUserPostgres(db),
 	}
 }

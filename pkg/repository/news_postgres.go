@@ -50,3 +50,15 @@ func (r *NewsPostgres) DeleteNews (id int) error {
 	}
 	return nil
 }
+
+func (r *NewsPostgres) EditNews(id int, news models.News) error {
+	query := fmt.Sprintf("UPDATE news SET title=$1, short_desc=$2, expire_at=$3, img=$4, full_desc=$5, Status=$6 WHERE id=$7")
+
+	_, err := r.db.Exec(query, news.Title, news.ShortDesc, news.ExpireAt, news.Img, news.FullDesc, news.Status, id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

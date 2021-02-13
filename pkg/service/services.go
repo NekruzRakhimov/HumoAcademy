@@ -23,6 +23,7 @@ type News interface {
 	CreateNews(news models.News) (int, error)
 	GetNewsByID (int) (models.News, error)
 	GetAllNews () ([]models.News, error)
+	EditNews(id int, news models.News) error
 	DeleteNews (id int) error
 }
 
@@ -32,11 +33,16 @@ type Admin interface {
 	ParseToken(accessToken string) (int, int, error)
 }
 
+type User interface {
+	GetAllSubscribedUsers () ([]string, error)
+}
+
 type Service struct {
 	MainPage
 	Courses
 	News
 	Admin
+	User
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -45,5 +51,6 @@ func NewService(repos *repository.Repository) *Service {
 		Courses: NewCoursesService(repos.Courses),
 		News: NewNewsService(repos.News),
 		Admin: NewAdminService(repos.Admin),
+		User: NewUserService(repos.User),
 	}
 }

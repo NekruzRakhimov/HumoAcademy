@@ -17,6 +17,10 @@ func (s *NewsService) CreateNews(news models.News) (int, error) {
 	return s.repo.CreateNews(news)
 }
 
+func (s *NewsService) EditNews(id int, news models.News) error {
+	return s.repo.EditNews(id, news)
+}
+
 func (s *NewsService) GetNewsByID (id int) (models.News, error) {
 	return s.repo.GetNewsByID(id)
 }

@@ -144,3 +144,47 @@ func (h *Handler) deleteNews(c *gin.Context){
 		"message":"news was successfully deleted",
 	})
 }
+
+func (h *Handler) editNews (c *gin.Context) {
+	_ , err := getAdminId(c) //TODO: (adminId) check id
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		return
+	}
+
+	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		return
+	}
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+		return
+	}
+
+	imgPath, err := getNewsImg(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
+	news, err := getNewsMainJson(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
+	news.Img = imgPath
+	err = h.services.News.EditNews(id, news)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"status": "ok",
+		"message": "news was successfully updated",
+	})
+}

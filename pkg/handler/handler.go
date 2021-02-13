@@ -42,6 +42,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		admin := api.Group("/admin",)
 		{
 			admin.POST("/sign-in", h.adminSignIn)
+			admin.GET("/subscribed-users", h.getAllSubscribedUsers, h.adminIdentity)
+			admin.POST("/send-mail", h.SendMail, h.adminIdentity)
 			courses := admin.Group("/courses", h.adminIdentity)
 			{
 				courses.POST("/", h.createCourse)
@@ -51,6 +53,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			news := admin.Group("/news", h.adminIdentity)
 			{
 				news.POST("/", h.createNews)
+				news.PUT("/:id", h.editNews)
 				news.DELETE("/:id", h.deleteNews)
 			}
 		}
