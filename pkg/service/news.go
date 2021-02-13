@@ -24,3 +24,7 @@ func (s *NewsService) GetNewsByID (id int) (models.News, error) {
 func (s *NewsService) GetAllNews () ([]models.News, error) {
 	return s.repo.GetAllNews()
 }
+
+func (s *NewsService) DeleteNews (id int) error{
+	return s.repo.DeleteNews(id)
+}

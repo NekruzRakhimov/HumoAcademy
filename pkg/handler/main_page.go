@@ -26,7 +26,7 @@ func (h *Handler) getAll(c *gin.Context) {
 	c.JSON(http.StatusOK, content)
 }
 
-//Adds new user to the DB for new events
+//Adds a new user to the DB for new events
 func (h *Handler) addUserForNews(c *gin.Context) {
 	var input models.SubscribedUsers
 	if err := c.BindJSON(&input); err != nil {

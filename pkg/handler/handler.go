@@ -51,10 +51,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			news := admin.Group("/news", h.adminIdentity)
 			{
 				news.POST("/", h.createNews)
+				news.DELETE("/:id", h.deleteNews)
 			}
 		}
 	}
-
 
 	return router
 }

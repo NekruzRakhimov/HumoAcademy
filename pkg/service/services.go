@@ -23,6 +23,7 @@ type News interface {
 	CreateNews(news models.News) (int, error)
 	GetNewsByID (int) (models.News, error)
 	GetAllNews () ([]models.News, error)
+	DeleteNews (id int) error
 }
 
 type Admin interface {

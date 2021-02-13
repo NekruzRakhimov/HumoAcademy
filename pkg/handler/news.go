@@ -16,14 +16,11 @@ const (
 	NewsImagesDirectory  = `images/news/%s_%s`
 )
 
-func getNewsImg(c *gin.Context) string {
+func getNewsImg(c *gin.Context)  (string, error) {
 	img, err := c.FormFile("img")
 	if err != nil {
 		log.Println("Error while receiving multipart form. error is", err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{
-			"reason" : err.Error(),
-		})
-		return ""
+		return "", err
 	}
 
 	timeSign := fmt.Sprintf("%d",time.Now().UnixNano())
@@ -33,26 +30,23 @@ func getNewsImg(c *gin.Context) string {
 	file, err := os.Create(imgPath)
 	if err != nil {
 		fmt.Println("Error while creating file for image.", err.Error())
-		return ""
+		return "", err
 	}
 	err = c.SaveUploadedFile(img, file.Name())
 	if err != nil {
 		fmt.Println("Error while saving the image.", err.Error())
-		return ""
+		return "", err
 	}
-	return imgPath
+	return imgPath, nil
 }
 
-func getNewsMainJson(c *gin.Context) models.News {
+func getNewsMainJson(c *gin.Context) (models.News, error) {
 	var News models.News
 
 	form, err := c.MultipartForm()
 	if err != nil {
 		log.Println("Error while receiving multipart form. error is", err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{
-			"reason" : err.Error(),
-		})
-		return models.News{}
+		return models.News{}, err
 	}
 
 	mainJson := form.Value["main_json"]
@@ -61,14 +55,11 @@ func getNewsMainJson(c *gin.Context) models.News {
 	err = json.Unmarshal([]byte(mainJson[0]), &News)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"reason": "wrong request body",
-		})
 		log.Println("json unmarshal error:", err.Error())
-		return models.News{}
+		return models.News{}, err
 	}
 
-	return News
+	return News, nil
 }
 
 func (h *Handler) getAllNews (c *gin.Context) {
@@ -87,16 +78,27 @@ func (h *Handler) getAllNews (c *gin.Context) {
 func (h *Handler) createNews (c *gin.Context) {
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
 		return
 	}
 
 	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
 	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
 		return
 	}
 
-	imgPath := getNewsImg(c)
-	news := getNewsMainJson(c)
+	imgPath, err := getNewsImg(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
+	news, err := getNewsMainJson(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
 	news.Img = imgPath
 
 	id, err := h.services.News.CreateNews(news)
@@ -124,4 +126,21 @@ func (h *Handler) getNewsById (c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, news)
+}
+
+func (h *Handler) deleteNews(c *gin.Context){
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+		return
+	}
+	err = h.services.News.DeleteNews(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"status": "ok",
+		"message":"news was successfully deleted",
+	})
 }

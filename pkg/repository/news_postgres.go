@@ -41,3 +41,12 @@ func (r *NewsPostgres) GetAllNews() ([]models.News, error) {
 	}
 	return courses, err
 }
+
+func (r *NewsPostgres) DeleteNews (id int) error {
+	query := fmt.Sprintf("UPDATE news SET status = 'false' where id = $1")
+	_, err := r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}

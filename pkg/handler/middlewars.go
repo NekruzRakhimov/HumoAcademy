@@ -48,6 +48,14 @@ func (h *Handler) adminIdentity(c *gin.Context) {
 	c.Set(adminLevelCtx, adminLevel)
 }
 
+func (h *Handler) getImg(c *gin.Context) {
+	imgPath := c.Param("img")
+	f1 := c.Param("f1")
+	f2 := c.Param("f2")
+
+	c.File("./" + f1 + "/" + f2 + "/" + imgPath)
+}
+
 func getAdminId(c *gin.Context) (int, error) {
 	adminId, ok := c.Get(adminIdCtx)
 	if !ok {
@@ -78,10 +86,3 @@ func getAdminLevel(c *gin.Context) (int, error) {
 	return idInt, nil
 }
 
-func (h *Handler) getImg(c *gin.Context) {
-	imgPath := c.Param("img")
-	f1 := c.Param("f1")
-	f2 := c.Param("f2")
-
-	c.File("./" + f1 + "/" + f2 + "/" + imgPath)
-}
