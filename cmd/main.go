@@ -57,7 +57,7 @@ func initConfig() error {
 func initLogs() {
 	log.SetOutput(&lumberjack.Logger{
 		Filename:   "logs/foo.log",
-		MaxSize:    10, // megabytes
+		MaxSize:    viper.GetInt(""), // megabytes
 		MaxBackups: 3,
 		MaxAge:     28, //days
 		Compress:   true, // disabled by default

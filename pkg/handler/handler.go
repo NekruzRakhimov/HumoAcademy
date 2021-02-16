@@ -49,6 +49,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			courses := admin.Group("/courses", h.adminIdentity)
 			{
 				courses.POST("/", h.createCourse)
+				courses.PATCH("/:id", h.changeCourseImg)
 				courses.PUT("/:id", h.editCourse)
 				courses.GET("/:id", h.changeCourseStatus)
 			}

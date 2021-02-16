@@ -36,3 +36,7 @@ func (s *CoursesService) GetAllMiniCourses () ([]models.MiniCourses, error) {
 func (s *CoursesService) ChangeCourseStatus (id int, status bool) error {
 	return s.repo.ChangeCourseStatus(id, status)
 }
+
+func (s *CoursesService) ChangeCourseImg(id int, img string) error {
+	return s.repo.ChangeCourseImg(id, img)
+}

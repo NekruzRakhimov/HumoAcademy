@@ -14,6 +14,18 @@ func NewCoursesPostgres(db *sqlx.DB) *CoursesPostgres {
 	return &CoursesPostgres{db: db}
 }
 
+func (r *CoursesPostgres) ChangeCourseImg(id int, img string) error {
+	query := fmt.Sprintf("UPDATE courses SET img=$1 WHERE id=$2")
+
+	_, err := r.db.Exec(query, img, id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r *CoursesPostgres) CreateCourse(course models.Courses) (int, error) {
 	var id int
 	query := fmt.Sprintf("INSERT INTO courses (title, img, description, plans, course_durance, status) VALUES($1, $2, $3, $4, $5, $6) RETURNING id")
@@ -26,9 +38,9 @@ func (r *CoursesPostgres) CreateCourse(course models.Courses) (int, error) {
 }
 
 func (r *CoursesPostgres) EditCourse(id int, course models.Courses) error {
-	query := fmt.Sprintf("UPDATE courses SET title=$1, img=$2, description=$3, plans=$4, course_durance=$5, status=$6 WHERE id=$7")
+	query := fmt.Sprintf("UPDATE courses SET title=$1, description=$2, plans=$3, course_durance=$4, status=$5 WHERE id=$6")
 
-	_, err := r.db.Exec(query, course.Title, course.Img, course.Description, course.Plans, course.CourseDurance, course.Status, id)
+	_, err := r.db.Exec(query, course.Title, course.Description, course.Plans, course.CourseDurance, course.Status, id)
 
 	if err != nil {
 		return err
@@ -50,7 +62,7 @@ func (r *CoursesPostgres) GetCourseById (id int) (models.Courses, error) {
 
 func (r *CoursesPostgres) GetAllMiniCourses() ([]models.MiniCourses, error) {
 	var courses []models.MiniCourses
-	query := fmt.Sprintf("SELECT id, title, img, course_durance, status FROM courses")
+	query := fmt.Sprintf("SELECT id, title, img, course_durance, status FROM courses ORDER BY id")
 	err := r.db.Select(&courses, query)
 	if err != nil {
 		return []models.MiniCourses{}, err

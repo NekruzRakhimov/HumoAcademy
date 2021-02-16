@@ -128,6 +128,50 @@ func (h *Handler) getAllMiniCourses (c *gin.Context) {
 	c.JSON(http.StatusOK, courses)
 }
 
+func (h *Handler) changeCourseImg (c *gin.Context) {
+	_ , err := getAdminId(c) //TODO: (adminId) check id
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		return
+	}
+
+	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		return
+	}
+	/*****************************************************************************************************/
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+		return
+	}
+
+	err = deleteImg(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
+	imgSrc, err := getNewCourseImg(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
+	err = h.services.Courses.ChangeCourseImg(id, imgSrc)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"status": "ok",
+		"message":"course image was successfully updated",
+	})
+}
+
 func (h *Handler) changeCourseStatus(c *gin.Context){
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
@@ -181,11 +225,11 @@ func (h *Handler) editCourse (c *gin.Context) {
 		return
 	}
 
-	imgPath, err := getNewCourseImg(c)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
-		return
-	}
+	//imgPath, err := getNewCourseImg(c)
+	//if err != nil {
+	//	newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+	//	return
+	//}
 
 	course, err := getNewCourseMainJson(c)
 	if err != nil {
@@ -193,7 +237,7 @@ func (h *Handler) editCourse (c *gin.Context) {
 		return
 	}
 
-	course.Img = imgPath
+	//course.Img = imgPath
 	err = h.services.Courses.EditCourse(id, course)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())

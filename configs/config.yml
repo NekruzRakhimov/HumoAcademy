@@ -9,3 +9,11 @@ db:
   password: "amirroot"
 
 base_url: "http://192.168.100.54:8181/"
+
+logger:
+  filename: "logs/foo.log"
+  max_size: "10"
+  max_backups: "3"
+  max_age: "28"
+  compress: "true"
+  

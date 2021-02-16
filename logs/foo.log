@@ -3,3 +3,33 @@
 2021/02/16 18:44:58 http: no such file%!(EXTRA string=
 )
 2021/02/16 18:44:58 bad
+2021/02/16 19:25:11 server is listening port 8181
+2021/02/16 19:27:30 Error while receiving multipart form. error is http: no such file
+2021/02/16 19:27:30 http: no such file%!(EXTRA string=
+)
+2021/02/16 19:27:30 bad
+2021/02/16 19:43:06 server is listening port 8181
+2021/02/16 19:45:11 server is listening port 8181
+2021/02/16 19:49:24 server is listening port 8181
+2021/02/16 20:28:23 server is listening port 8181
+2021/02/16 20:31:50 json unmarshal error: json: cannot unmarshal object into Go value of type string
+2021/02/16 20:31:50 json: cannot unmarshal object into Go value of type string%!(EXTRA string=
+)
+2021/02/16 20:31:50 bad
+2021/02/16 20:35:13 server is listening port 8181
+2021/02/16 20:36:55 remove "images/courses/1613489787278534700_nekruz.png": The filename, directory name, or volume label syntax is incorrect.
+2021/02/16 20:37:21 server is listening port 8181
+2021/02/16 20:37:30 remove "images/courses/1613489787278534700_nekruz.png": The filename, directory name, or volume label syntax is incorrect.
+2021/02/16 20:38:35 server is listening port 8181
+2021/02/16 20:39:37 remove images/courses/1613489941837839600_nekruz.png: The process cannot access the file because it is being used by another process.
+2021/02/16 20:40:04 server is listening port 8181
+2021/02/16 20:40:14 remove images/courses/1613489941837839600_nekruz.png: The system cannot find the file specified.
+2021/02/16 20:41:03 server is listening port 8181
+2021/02/16 20:41:36 remove images/courses/1613490068466975400_nekruz.png: The process cannot access the file because it is being used by another process.
+2021/02/16 20:41:47 server is listening port 8181
+2021/02/16 20:41:51 remove images/courses/1613490068466975400_nekruz.png: The system cannot find the file specified.
+2021/02/16 20:42:50 server is listening port 8181
+2021/02/16 20:42:51 remove images/courses/1613490068466975400_nekruz.png: The system cannot find the file specified.
+2021/02/16 20:42:51 remove images/courses/1613490068466975400_nekruz.png: The system cannot find the file specified.%!(EXTRA string=
+)
+2021/02/16 20:42:51 bad

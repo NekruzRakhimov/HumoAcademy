@@ -16,6 +16,7 @@ type Courses interface {
 	GetCourseById (int) (models.Courses, error)
 	GetAllMiniCourses() ([]models.MiniCourses, error)
 	ChangeCourseStatus (id int, status bool) error
+	ChangeCourseImg(id int, img string) error
 }
 
 type News interface {
