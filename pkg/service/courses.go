@@ -18,7 +18,6 @@ func NewCoursesService(repo repository.Courses) *CoursesService {
 }
 
 func (s *CoursesService) CreateCourse(course models.Courses) (int, error) {
-	course.Status = "open" //статус по умолчанию для всех курсов TODO: проверить на пустоту
 	return s.repo.CreateCourse(course)
 }
 
@@ -30,10 +29,10 @@ func (s *CoursesService) GetCourseById (id int) (Course models.Courses, err erro
 	return s.repo.GetCourseById(id)
 }
 
-func (s *CoursesService) GetAllCourses () ([]models.Courses, error) {
-	return s.repo.GetAllCourses()
+func (s *CoursesService) GetAllMiniCourses () ([]models.MiniCourses, error) {
+	return s.repo.GetAllMiniCourses()
 }
 
-func (s *CoursesService) DeleteCourse (id int) error{
-	return s.repo.DeleteCourse(id)
+func (s *CoursesService) ChangeCourseStatus (id int, status bool) error {
+	return s.repo.ChangeCourseStatus(id, status)
 }

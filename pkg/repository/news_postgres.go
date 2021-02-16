@@ -32,23 +32,14 @@ func (r *NewsPostgres) GetNewsByID (id int) (models.News, error) {
 	return news, err
 }
 
-func (r *NewsPostgres) GetAllNews() ([]models.News, error) {
-	var courses []models.News
-	query := fmt.Sprintf("SELECT id, title, short_desc, expire_at, img, full_desc, status FROM news")
+func (r *NewsPostgres) GetAllMiniNews() ([]models.MiniNews, error) {
+	var courses []models.MiniNews
+	query := fmt.Sprintf("SELECT id, title, short_desc, img FROM news")
 	err := r.db.Select(&courses, query)
 	if err != nil {
-		return []models.News{}, err
+		return []models.MiniNews{}, err
 	}
 	return courses, err
-}
-
-func (r *NewsPostgres) DeleteNews (id int) error {
-	query := fmt.Sprintf("UPDATE news SET status = 'false' where id = $1")
-	_, err := r.db.Exec(query, id)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func (r *NewsPostgres) EditNews(id int, news models.News) error {
@@ -60,5 +51,14 @@ func (r *NewsPostgres) EditNews(id int, news models.News) error {
 		return err
 	}
 
+	return nil
+}
+
+func (r *NewsPostgres) ChangeNewsStatus (id int, status bool) error {
+	query := fmt.Sprintf("UPDATE news SET status = $1 where id = $2")
+	_, err := r.db.Exec(query, status, id)
+	if err != nil {
+		return err
+	}
 	return nil
 }

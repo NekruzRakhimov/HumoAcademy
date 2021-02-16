@@ -14,17 +14,16 @@ type Courses interface {
 	CreateCourse(course models.Courses) (int, error)
 	EditCourse(id int, course models.Courses) error
 	GetCourseById (int) (models.Courses, error)
-	GetAllCourses() ([]models.Courses, error)
-	DeleteCourse (id int) error
-
+	GetAllMiniCourses() ([]models.MiniCourses, error)
+	ChangeCourseStatus (id int, status bool) error
 }
 
 type News interface {
 	CreateNews(news models.News) (int, error)
 	GetNewsByID (id int) (models.News, error)
-	GetAllNews() ([]models.News, error)
+	GetAllMiniNews() ([]models.MiniNews, error)
 	EditNews(id int, news models.News) error
-	DeleteNews (id int) error
+	ChangeNewsStatus (id int, status bool) error
 }
 
 type Admin interface {

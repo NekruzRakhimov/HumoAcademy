@@ -62,15 +62,15 @@ func getNewsMainJson(c *gin.Context) (models.News, error) {
 	return News, nil
 }
 
-func (h *Handler) getAllNews (c *gin.Context) {
+func (h *Handler) getAllMiniNews (c *gin.Context) {
 
-	news, err := h.services.News.GetAllNews()
+	news, err := h.services.News.GetAllMiniNews()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError,"bad" ,err.Error())
 		return
 	}
 	if news == nil {
-		news = []models.News{}
+		news = []models.MiniNews{}
 	}
 	c.JSON(http.StatusOK, news)
 }
@@ -128,23 +128,6 @@ func (h *Handler) getNewsById (c *gin.Context) {
 	c.JSON(http.StatusOK, news)
 }
 
-func (h *Handler) deleteNews(c *gin.Context){
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
-		return
-	}
-	err = h.services.News.DeleteNews(id)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
-		return
-	}
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"status": "ok",
-		"message":"news was successfully deleted",
-	})
-}
-
 func (h *Handler) editNews (c *gin.Context) {
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
@@ -188,3 +171,38 @@ func (h *Handler) editNews (c *gin.Context) {
 		"message": "news was successfully updated",
 	})
 }
+
+func (h *Handler) changeNewsStatus(c *gin.Context){
+	_ , err := getAdminId(c) //TODO: (adminId) check id
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		return
+	}
+
+	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		return
+	}
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+		return
+	}
+
+	statusSTR := c.Query("status")
+	status := strToBool(statusSTR)
+
+	err = h.services.News.ChangeNewsStatus(id, status)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"status": "ok",
+		"message":"course_status was successfully updated",
+	})
+}
+

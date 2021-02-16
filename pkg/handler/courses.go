@@ -10,6 +10,7 @@ import (
 	"os"
 	"strconv"
 	"time"
+
 )
 
 const (
@@ -29,12 +30,12 @@ func getNewCourseImg(c *gin.Context) (string, error) {
 
 	file, err := os.Create(imgPath)
 	if err != nil {
-		fmt.Println("Error while creating file for image.", err.Error())
+		log.Println("Error while creating file for image.", err.Error())
 		return "", err
 	}
 	err = c.SaveUploadedFile(img, file.Name())
 	if err != nil {
-		fmt.Println("Error while saving the image.", err.Error())
+		log.Println("Error while saving the image.", err.Error())
 		return "", err
 	}
 	return imgPath, nil
@@ -114,20 +115,20 @@ func (h *Handler) getCourseById (c *gin.Context) {
 	c.JSON(http.StatusOK, course)
 }
 
-func (h *Handler) getAllCourses (c *gin.Context) {
+func (h *Handler) getAllMiniCourses (c *gin.Context) {
 
-	courses, err := h.services.Courses.GetAllCourses()
+	courses, err := h.services.Courses.GetAllMiniCourses()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 	if courses == nil {
-		courses = []models.Courses{}
+		courses = []models.MiniCourses{}
 	}
 	c.JSON(http.StatusOK, courses)
 }
 
-func (h *Handler) deleteCourse(c *gin.Context){
+func (h *Handler) changeCourseStatus(c *gin.Context){
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
 		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
@@ -146,14 +147,18 @@ func (h *Handler) deleteCourse(c *gin.Context){
 		return
 	}
 
-	err = h.services.Courses.DeleteCourse(id)
+	statusSTR := c.Query("status")
+	status := strToBool(statusSTR)
+
+	err = h.services.Courses.ChangeCourseStatus(id, status)
+
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"status": "ok",
-		"message":"course was successfully deleted",
+		"message":"course_status was successfully updated",
 	})
 }
 

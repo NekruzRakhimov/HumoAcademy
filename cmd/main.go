@@ -9,10 +9,13 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
+	"gopkg.in/natefinch/lumberjack.v2"
 	"log"
 )
 
 func main() {
+	//logrus.SetFormatter(new(logrus.JSONFormatter)) //ошибки будут иметь формат json
+	initLogs()
 	if err := initConfig(); err != nil {
 		log.Fatalf("error while reading config file. Error is %s", err.Error())
 	}
@@ -34,6 +37,7 @@ func main() {
 	schema.DBInit(database)
 
 	fmt.Println("server is listening port 8181")
+	log.Println("server is listening port 8181")
 	repos := repository.NewRepository(database)
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
@@ -48,4 +52,14 @@ func initConfig() error {
 	viper.AddConfigPath("configs")
 	viper.SetConfigName("config")
 	return viper.ReadInConfig()
+}
+
+func initLogs() {
+	log.SetOutput(&lumberjack.Logger{
+		Filename:   "logs/foo.log",
+		MaxSize:    10, // megabytes
+		MaxBackups: 3,
+		MaxAge:     28, //days
+		Compress:   true, // disabled by default
+	})
 }

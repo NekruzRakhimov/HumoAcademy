@@ -50,10 +50,10 @@ func (h *Handler) adminIdentity(c *gin.Context) {
 
 func (h *Handler) getImg(c *gin.Context) {
 	imgPath := c.Param("img")
-	f1 := c.Param("f1")
+	//f1 := "images"
 	f2 := c.Param("f2")
 
-	c.File("./" + f1 + "/" + f2 + "/" + imgPath)
+	c.File("./images/" + f2 + "/" + imgPath)
 }
 
 func getAdminId(c *gin.Context) (int, error) {

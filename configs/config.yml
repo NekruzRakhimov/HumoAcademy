@@ -7,3 +7,5 @@ db:
   dbname: "ha_db"
   sslmode: "disable"
   password: "amirroot"
+
+base_url: "http://192.168.100.54:8181/"

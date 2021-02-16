@@ -25,10 +25,10 @@ func (s *NewsService) GetNewsByID (id int) (models.News, error) {
 	return s.repo.GetNewsByID(id)
 }
 
-func (s *NewsService) GetAllNews () ([]models.News, error) {
-	return s.repo.GetAllNews()
+func (s *NewsService) GetAllMiniNews () ([]models.MiniNews, error) {
+	return s.repo.GetAllMiniNews()
 }
 
-func (s *NewsService) DeleteNews (id int) error{
-	return s.repo.DeleteNews(id)
+func (s *NewsService) ChangeNewsStatus (id int, status bool) error {
+	return s.repo.ChangeNewsStatus(id, status)
 }

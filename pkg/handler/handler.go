@@ -21,40 +21,42 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		main.GET("/", h.getAll)
 		main.POST("/", h.addUserForNews)
-		main.GET("/getImg/:f1/:f2/:img", h.getImg)
+		main.GET("/images/:f2/:img", h.getImg)
 	}
 
 	api := router.Group("/api")
 	{
 		courses := api.Group("/courses")
 		{
-			courses.GET("/", h.getAllCourses)
+			//courses.GET("/", h.getAllCourses)
+			courses.GET("/", h.getAllMiniCourses)
 			courses.GET("/:id", h.getCourseById)
 			courses.POST("/:id", h.registerToCourse)
 		}
 
 		news := api.Group("/news")
 		{
-			news.GET("/", h.getAllNews)
+			//news.GET("", h.getAllNews)
 			news.GET("/:id", h.getNewsById)
+			news.GET("/", h.getAllMiniNews)
 		}
 
 		admin := api.Group("/admin",)
 		{
 			admin.POST("/sign-in", h.adminSignIn)
-			admin.GET("/subscribed-users", h.getAllSubscribedUsers, h.adminIdentity)
-			admin.POST("/send-mail", h.SendMail, h.adminIdentity)
+			admin.GET("/subscribed-users", h.adminIdentity, h.getAllSubscribedUsers)
+			admin.POST("/send-mail", h.adminIdentity, h.SendMail)
 			courses := admin.Group("/courses", h.adminIdentity)
 			{
 				courses.POST("/", h.createCourse)
 				courses.PUT("/:id", h.editCourse)
-				courses.DELETE("/:id", h.deleteCourse)
+				courses.GET("/:id", h.changeCourseStatus)
 			}
 			news := admin.Group("/news", h.adminIdentity)
 			{
 				news.POST("/", h.createNews)
 				news.PUT("/:id", h.editNews)
-				news.DELETE("/:id", h.deleteNews)
+				news.GET("/:id/", h.changeNewsStatus)
 			}
 		}
 	}

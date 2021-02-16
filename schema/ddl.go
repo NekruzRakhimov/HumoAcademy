@@ -2,7 +2,7 @@ package schema
 
 //arrays of DDLs
 var (
-	CreatingDDLs = []string {CreatingCourseStatusTable, CreatingCoursesTable, CreatingNewsTable, CreatingSubscribedUsersTable, CreatingAdminsLevelTable, CreatingAdminsTable, CreatingUsersRolesTable}
+	CreatingDDLs = []string {CreatingCoursesTable, CreatingNewsTable, CreatingSubscribedUsersTable, CreatingAdminsLevelTable, CreatingAdminsTable, CreatingUsersRolesTable}
 	DroppingDDLs = []string {DroppingCoursesTable, DroppingCourseStatusTable, DroppingNewsTable, DroppingAdminsTable, DroppingAdminsLevelTable, DroppingUsersRolesTable, DroppingSubscribedUsersTable}
 )
 
@@ -27,7 +27,7 @@ CreatingCoursesTable = `CREATE TABLE IF NOT EXISTS courses
 	img VARCHAR(255) NOT NULL,
 	description TEXT NOT NULL,
 	plans TEXT NOT NULL,
-	status SERIAL REFERENCES course_status(id) NOT NULL
+	status BOOLEAN DEFAULT(TRUE)
 );`
 
 CreatingSubscribedUsersTable = `CREATE TABLE IF NOT EXISTS subscribed_users
@@ -35,12 +35,6 @@ CreatingSubscribedUsersTable = `CREATE TABLE IF NOT EXISTS subscribed_users
 	id SERIAL NOT NULL UNIQUE PRIMARY KEY,
 	email VARCHAR(255) NOT NULL,
 	UNIQUE(email)
-);`
-
-CreatingCourseStatusTable = `CREATE TABLE IF NOT EXISTS course_status
-(
-	id SERIAL NOT NULL UNIQUE PRIMARY KEY,
-	status VARCHAR(255) NOT NULL
 );`
 
 CreatingAdminsLevelTable = `CREATE TABLE IF NOT EXISTS admins_level
