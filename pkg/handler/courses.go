@@ -33,6 +33,8 @@ func getNewCourseImg(c *gin.Context) (string, error) {
 		log.Println("Error while creating file for image.", err.Error())
 		return "", err
 	}
+	defer file.Close()
+
 	err = c.SaveUploadedFile(img, file.Name())
 	if err != nil {
 		log.Println("Error while saving the image.", err.Error())
@@ -147,20 +149,27 @@ func (h *Handler) changeCourseImg (c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
 		return
 	}
+	/*****************************************************************************************************/
+	imgSrc, err := h.services.Courses.GetCourseImgSrc(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+	err = deleteImg(imgSrc)
 
-	err = deleteImg(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+	/*****************************************************************************************************/
+
+	imgPath, err := getNewCourseImg(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 
-	imgSrc, err := getNewCourseImg(c)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
-		return
-	}
-
-	err = h.services.Courses.ChangeCourseImg(id, imgSrc)
+	err = h.services.Courses.ChangeCourseImg(id, imgPath)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
 		return
@@ -230,14 +239,21 @@ func (h *Handler) editCourse (c *gin.Context) {
 	//	newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 	//	return
 	//}
+	//course, err := getNewCourseMainJson(c)
+	//if err != nil {
+	//	newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+	//	return
+	//}
+	//course.Img = imgPath
 
-	course, err := getNewCourseMainJson(c)
+
+	var course models.Courses
+	err = c.BindJSON(&course)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		newErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return
 	}
 
-	//course.Img = imgPath
 	err = h.services.Courses.EditCourse(id, course)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())

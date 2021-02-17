@@ -15,4 +15,5 @@ type MiniNews struct {
 	Title string `json:"title"`
 	ShortDesc string `json:"short_desc" db:"short_desc"`
 	Img string `json:"img"`
+	Status bool `json:"status"`
 }

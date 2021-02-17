@@ -60,6 +60,16 @@ func (r *CoursesPostgres) GetCourseById (id int) (models.Courses, error) {
 	return course, nil
 }
 
+func (r *CoursesPostgres) GetCourseImgSrc(id int) (string, error) {
+	var imgSrc string
+	query := fmt.Sprintf("SELECT img FROM courses WHERE id=$1")
+	row := r.db.QueryRow(query, id)
+	if err := row.Scan(&imgSrc); err != nil {
+		return "", err
+	}
+	return imgSrc, nil
+}
+
 func (r *CoursesPostgres) GetAllMiniCourses() ([]models.MiniCourses, error) {
 	var courses []models.MiniCourses
 	query := fmt.Sprintf("SELECT id, title, img, course_durance, status FROM courses ORDER BY id")

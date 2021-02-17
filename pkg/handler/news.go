@@ -32,6 +32,8 @@ func getNewsImg(c *gin.Context)  (string, error) {
 		fmt.Println("Error while creating file for image.", err.Error())
 		return "", err
 	}
+	defer file.Close()
+
 	err = c.SaveUploadedFile(img, file.Name())
 	if err != nil {
 		fmt.Println("Error while saving the image.", err.Error())
@@ -147,11 +149,11 @@ func (h *Handler) editNews (c *gin.Context) {
 		return
 	}
 
-	imgPath, err := getNewsImg(c)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
-		return
-	}
+	//imgPath, err := getNewsImg(c)
+	//if err != nil {
+	//	newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+	//	return
+	//}
 
 	news, err := getNewsMainJson(c)
 	if err != nil {
@@ -159,7 +161,7 @@ func (h *Handler) editNews (c *gin.Context) {
 		return
 	}
 
-	news.Img = imgPath
+	//news.Img = imgPath
 	err = h.services.News.EditNews(id, news)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
@@ -203,6 +205,51 @@ func (h *Handler) changeNewsStatus(c *gin.Context){
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"status": "ok",
 		"message":"course_status was successfully updated",
+	})
+}
+
+func (h *Handler) changeNewsImg (c *gin.Context) {
+	_ , err := getAdminId(c) //TODO: (adminId) check id
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		return
+	}
+
+	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		return
+	}
+	/*****************************************************************************************************/
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+		return
+	}
+	/*****************************************************************************************************/
+	imgSrc, err := h.services.News.GetNewsImgSrc(id)
+	err = deleteImg(imgSrc)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+	/*****************************************************************************************************/
+	imgPath, err := getNewsImg(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
+	err = h.services.News.ChangeNewsImg(id, imgPath)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"status": "ok",
+		"message":"news image was successfully updated",
 	})
 }
 

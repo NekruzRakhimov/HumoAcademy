@@ -32,3 +32,11 @@ func (s *NewsService) GetAllMiniNews () ([]models.MiniNews, error) {
 func (s *NewsService) ChangeNewsStatus (id int, status bool) error {
 	return s.repo.ChangeNewsStatus(id, status)
 }
+
+func (s *NewsService) ChangeNewsImg(id int, img string) error {
+	return s.repo.ChangeNewsImg(id, img)
+}
+
+func (s *NewsService) GetNewsImgSrc (id int) (string, error) {
+	return s.repo.GetNewsImgSrc(id)
+}

@@ -40,3 +40,7 @@ func (s *CoursesService) ChangeCourseStatus (id int, status bool) error {
 func (s *CoursesService) ChangeCourseImg(id int, img string) error {
 	return s.repo.ChangeCourseImg(id, img)
 }
+
+func (s *CoursesService) GetCourseImgSrc(id int) (string, error) {
+	return s.repo.GetCourseImgSrc(id)
+}

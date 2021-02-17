@@ -56,10 +56,16 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			news := admin.Group("/news", h.adminIdentity)
 			{
 				news.POST("/", h.createNews)
+				news.PATCH("/:id", h.changeNewsImg)
 				news.PUT("/:id", h.editNews)
 				news.GET("/:id/", h.changeNewsStatus)
 			}
 		}
+
+		//user := api.Group("/user",)
+		//{
+		//	user.POST("/sign-in", h.userSignUp)
+		//}
 	}
 
 	return router

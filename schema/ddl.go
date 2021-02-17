@@ -2,8 +2,8 @@ package schema
 
 //arrays of DDLs
 var (
-	CreatingDDLs = []string {CreatingCoursesTable, CreatingNewsTable, CreatingSubscribedUsersTable, CreatingAdminsLevelTable, CreatingAdminsTable, CreatingUsersRolesTable}
-	DroppingDDLs = []string {DroppingCoursesTable, DroppingCourseStatusTable, DroppingNewsTable, DroppingAdminsTable, DroppingAdminsLevelTable, DroppingUsersRolesTable, DroppingSubscribedUsersTable}
+	CreatingDDLs = []string {CreatingCoursesTable, CreatingNewsTable, CreatingSubscribedUsersTable, CreatingAdminsLevelTable, CreatingAdminsTable, CreatingUsersRolesTable, CreatingUsersTable}
+	DroppingDDLs = []string {DroppingUsersTable, DroppingCoursesTable, DroppingNewsTable, DroppingAdminsTable, DroppingAdminsLevelTable, DroppingUsersRolesTable, DroppingSubscribedUsersTable}
 )
 
 //Creating tables
@@ -23,7 +23,7 @@ CreatingCoursesTable = `CREATE TABLE IF NOT EXISTS courses
 (
 	id SERIAL NOT NULL UNIQUE PRIMARY KEY,
 	title VARCHAR(255) NOT NULL,
-	course_durance SERIAL NOT NULL,
+	course_durance VARCHAR(255) NOT NULL,
 	img VARCHAR(255) NOT NULL,
 	description TEXT NOT NULL,
 	plans TEXT NOT NULL,
@@ -59,6 +59,18 @@ CreatingUsersRolesTable = `CREATE TABLE IF NOT EXISTS users_roles
 	role VARCHAR(255) NOT NULL
 );`
 
+CreatingUsersTable = `CREATE TABLE IF NOT EXISTS applicant_users
+(
+	id SERIAL NOT NULL UNIQUE PRIMARY KEY,
+	firs_name VARCHAR(255) NOT NULL,
+	last_name VARCHAR(255) NOT NULL,
+	middle_name VARCHAR(255),
+	email VARCHAR(255) UNIQUE NOT NULL,
+	about TEXT NOT NULL,
+	cv VARCHAR(255) NOT NULL,
+	course_id SERIAL NOT NULL REFERENCES courses(id)
+);`
+
 )
 
 //Dropping tables
@@ -66,9 +78,9 @@ const (
 	DroppingNewsTable = `DROP TABLE IF EXISTS news;`
 	DroppingCoursesTable = `DROP TABLE IF EXISTS courses;`
 	DroppingSubscribedUsersTable = `DROP TABLE IF EXISTS subscribed_users;`
-	DroppingCourseStatusTable = `DROP TABLE IF EXISTS course_status;`
 	DroppingAdminsLevelTable = `DROP TABLE IF EXISTS admins_level;`
 	DroppingAdminsTable = `DROP TABLE IF EXISTS admins;`
 	DroppingUsersRolesTable = `DROP TABLE IF EXISTS users_roles;`
+	DroppingUsersTable = `DROP TABLE IF EXISTS applicants_users;`
 
 )

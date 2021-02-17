@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"HumoAcademy/models"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -66,4 +67,24 @@ func (h *Handler) SendMail (c *gin.Context) {
 		log.Fatal(err)
 	}
 
+}
+
+func (h *Handler) usSignUp (c *gin.Context) {
+	var input models.Admin
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "bad","invalid input body")
+		return
+	}
+
+	id, err := h.services.Admin.CreateAdmin(input)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"status": "ok",
+		"id": id,
+	})
 }

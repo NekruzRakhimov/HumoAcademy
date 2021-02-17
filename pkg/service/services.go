@@ -18,6 +18,7 @@ type Courses interface {
 	GetAllMiniCourses () ([]models.MiniCourses, error)
 	ChangeCourseStatus (id int, status bool) error
 	ChangeCourseImg(id int, img string) error
+	GetCourseImgSrc(id int) (string, error)
 }
 
 type News interface {
@@ -26,6 +27,8 @@ type News interface {
 	GetAllMiniNews () ([]models.MiniNews, error)
 	EditNews(id int, news models.News) error
 	ChangeNewsStatus (id int, status bool) error
+	ChangeNewsImg(id int, img string) error
+	GetNewsImgSrc (id int) (string, error)
 }
 
 type Admin interface {
@@ -36,6 +39,7 @@ type Admin interface {
 
 type User interface {
 	GetAllSubscribedUsers () ([]string, error)
+	CreateUser(user models.Users) (int, error)
 }
 
 type Service struct {

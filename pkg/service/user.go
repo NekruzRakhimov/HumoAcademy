@@ -1,6 +1,7 @@
 package service
 
 import (
+	"HumoAcademy/models"
 	"HumoAcademy/pkg/repository"
 )
 
@@ -17,3 +18,7 @@ func (s *UserService) GetAllSubscribedUsers () ([]string, error) {
 	return s.repo.GetAllSubscribedUsers()
 }
 
+func (s *UserService) CreateUser(user models.Users) (int, error){
+	//generatePasswordHash(user.Password)
+	return s.repo.CreateUser(user)
+}

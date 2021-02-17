@@ -6,7 +6,7 @@ type Courses struct {
 	Img string `json:"img"`
 	Description string `json:"description"`
 	Plans string `json:"plans"`
-	CourseDurance int `json:"course_durance" db:"course_durance"`
+	CourseDurance string `json:"course_durance" db:"course_durance"`
 	Status bool `json:"status"`
 }
 

@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
 	"os"
 )
@@ -14,8 +13,7 @@ func strToBool(s string) bool {
 	return false
 }
 
-func deleteImg (c *gin.Context) error {
-	imgSrc := c.Query("img_src")
+func deleteImg (imgSrc string) error {
 	err := os.Remove(imgSrc)
 	if err != nil {
 		log.Println(err)
