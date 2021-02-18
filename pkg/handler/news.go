@@ -19,7 +19,7 @@ const (
 func getNewsImg(c *gin.Context)  (string, error) {
 	img, err := c.FormFile("img")
 	if err != nil {
-		log.Println("Error while receiving multipart form. error is", err.Error())
+		newErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return "", err
 	}
 
@@ -29,14 +29,14 @@ func getNewsImg(c *gin.Context)  (string, error) {
 
 	file, err := os.Create(imgPath)
 	if err != nil {
-		fmt.Println("Error while creating file for image.", err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return "", err
 	}
 	defer file.Close()
 
 	err = c.SaveUploadedFile(img, file.Name())
 	if err != nil {
-		fmt.Println("Error while saving the image.", err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return "", err
 	}
 	return imgPath, nil
@@ -47,7 +47,7 @@ func getNewsMainJson(c *gin.Context) (models.News, error) {
 
 	form, err := c.MultipartForm()
 	if err != nil {
-		log.Println("Error while receiving multipart form. error is", err.Error())
+		newErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return models.News{}, err
 	}
 
@@ -57,7 +57,7 @@ func getNewsMainJson(c *gin.Context) (models.News, error) {
 	err = json.Unmarshal([]byte(mainJson[0]), &News)
 
 	if err != nil {
-		log.Println("json unmarshal error:", err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return models.News{}, err
 	}
 
@@ -149,19 +149,13 @@ func (h *Handler) editNews (c *gin.Context) {
 		return
 	}
 
-	//imgPath, err := getNewsImg(c)
-	//if err != nil {
-	//	newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
-	//	return
-	//}
-
-	news, err := getNewsMainJson(c)
+	var news models.News
+	err = c.BindJSON(&news)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 
-	//news.Img = imgPath
 	err = h.services.News.EditNews(id, news)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())

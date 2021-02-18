@@ -14,6 +14,6 @@ type MiniCourses struct {
 	Id int `json:"id"`
 	Title string `json:"title"`
 	Img string `json:"img"`
-	CourseDurance int `json:"course_durance" db:"course_durance"`
+	CourseDurance string `json:"course_durance" db:"course_durance"`
 	Status bool `json:"status"`
 }

@@ -20,7 +20,7 @@ const (
 func getNewCourseImg(c *gin.Context) (string, error) {
 	img, err := c.FormFile("img")
 	if err != nil {
-		log.Println("Error while receiving multipart form. error is", err.Error())
+		newErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return "", err
 	}
 
@@ -30,14 +30,14 @@ func getNewCourseImg(c *gin.Context) (string, error) {
 
 	file, err := os.Create(imgPath)
 	if err != nil {
-		log.Println("Error while creating file for image.", err.Error())
+		newErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
 		return "", err
 	}
 	defer file.Close()
 
 	err = c.SaveUploadedFile(img, file.Name())
 	if err != nil {
-		log.Println("Error while saving the image.", err.Error())
+		newErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
 		return "", err
 	}
 	return imgPath, nil
@@ -48,7 +48,7 @@ func getNewCourseMainJson(c *gin.Context) (models.Courses, error) {
 
 	form, err := c.MultipartForm()
 	if err != nil {
-		log.Println("Error while receiving multipart form. error is", err.Error())
+		newErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return models.Courses{}, err
 	}
 
@@ -56,7 +56,7 @@ func getNewCourseMainJson(c *gin.Context) (models.Courses, error) {
 
 	err = json.Unmarshal([]byte(mainJson[0]), &Course)
 	if err != nil {
-		log.Println("json unmarshal error:", err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return models.Courses{}, err
 	}
 
@@ -122,6 +122,7 @@ func (h *Handler) getAllMiniCourses (c *gin.Context) {
 	courses, err := h.services.Courses.GetAllMiniCourses()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		log.Println("Error: While getting all miniCourses. Error is ", err.Error())
 		return
 	}
 	if courses == nil {
@@ -233,19 +234,6 @@ func (h *Handler) editCourse (c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
 		return
 	}
-
-	//imgPath, err := getNewCourseImg(c)
-	//if err != nil {
-	//	newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
-	//	return
-	//}
-	//course, err := getNewCourseMainJson(c)
-	//if err != nil {
-	//	newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
-	//	return
-	//}
-	//course.Img = imgPath
-
 
 	var course models.Courses
 	err = c.BindJSON(&course)

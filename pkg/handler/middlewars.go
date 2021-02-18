@@ -21,10 +21,6 @@ func (h *Handler) Cors(c *gin.Context) {
 	if c.Request.Method == "OPTIONS" {
 		c.AbortWithStatus(200)
 	}
-
-	//c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
-	//c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Request-With")
-	//c.Header("Accept", "*/*")
 }
 
 func (h *Handler) adminIdentity(c *gin.Context) {
@@ -46,14 +42,6 @@ func (h *Handler) adminIdentity(c *gin.Context) {
 	}
 	c.Set(adminIdCtx, adminId)
 	c.Set(adminLevelCtx, adminLevel)
-}
-
-func (h *Handler) getImg(c *gin.Context) {
-	imgPath := c.Param("img")
-	//f1 := "images"
-	f2 := c.Param("f2")
-
-	c.File("./images/" + f2 + "/" + imgPath)
 }
 
 func getAdminId(c *gin.Context) (int, error) {

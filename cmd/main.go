@@ -15,10 +15,11 @@ import (
 
 func main() {
 	//logrus.SetFormatter(new(logrus.JSONFormatter)) //ошибки будут иметь формат json
-	initLogs()
 	if err := initConfig(); err != nil {
 		log.Fatalf("error while reading config file. Error is %s", err.Error())
 	}
+
+	initLogs()
 
 	database, err := repository.NewPostgresDB(repository.Config{
 		Host:     viper.GetString("db.host"),
@@ -38,6 +39,7 @@ func main() {
 
 	fmt.Println("server is listening port 8181")
 	log.Println("server is listening port 8181")
+
 	repos := repository.NewRepository(database)
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)

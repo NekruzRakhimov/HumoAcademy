@@ -16,13 +16,13 @@ func NewMainPagePostgres(db *sqlx.DB) *MainPagePostgres {
 
 func (r *MainPagePostgres) GetAll() (models.MainPageContent, error) {
 	var Content models.MainPageContent
-	queryNews := fmt.Sprintf("SELECT id, title, short_desc, img FROM news")
+	queryNews := fmt.Sprintf("SELECT id, title, short_desc, img FROM news WHERE status=true")
 	err := r.db.Select(&Content.News, queryNews)
 	if err != nil {
 		return models.MainPageContent{}, err
 	}
 
-	queryCourses := fmt.Sprintf("SELECT id, title, course_durance, img FROM courses")
+	queryCourses := fmt.Sprintf("SELECT id, title, course_durance, img FROM courses WHERE status=true")
 	err = r.db.Select(&Content.Courses, queryCourses)
 	if err != nil {
 		return models.MainPageContent{}, err
@@ -32,7 +32,7 @@ func (r *MainPagePostgres) GetAll() (models.MainPageContent, error) {
 }
 
 func (r *MainPagePostgres) AddUserForNews (user models.SubscribedUsers) error {
-	query := "INSERT INTO subscribed_users (email) VALUES($1)"
+	query := fmt.Sprintf("INSERT INTO subscribed_users (email) VALUES($1)")
 	_, err := r.db.Exec(query, user.Email)
 	if err != nil {
 		return err

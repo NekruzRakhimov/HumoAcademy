@@ -38,6 +38,10 @@ type Admin interface {
 type User interface {
 	GetAllSubscribedUsers() ([]string, error)
 	CreateUser(user models.Users) (int, error)
+	GetAllUsers() ([]models.Users, error)
+	DeleteUserByID (id int) error
+	GetUserById (id int) (models.Users, error)
+
 }
 
 type Repository struct {

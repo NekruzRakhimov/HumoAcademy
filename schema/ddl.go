@@ -59,10 +59,10 @@ CreatingUsersRolesTable = `CREATE TABLE IF NOT EXISTS users_roles
 	role VARCHAR(255) NOT NULL
 );`
 
-CreatingUsersTable = `CREATE TABLE IF NOT EXISTS applicant_users
+CreatingUsersTable = `CREATE TABLE IF NOT EXISTS users
 (
 	id SERIAL NOT NULL UNIQUE PRIMARY KEY,
-	firs_name VARCHAR(255) NOT NULL,
+	first_name VARCHAR(255) NOT NULL,
 	last_name VARCHAR(255) NOT NULL,
 	middle_name VARCHAR(255),
 	email VARCHAR(255) UNIQUE NOT NULL,
@@ -81,6 +81,6 @@ const (
 	DroppingAdminsLevelTable = `DROP TABLE IF EXISTS admins_level;`
 	DroppingAdminsTable = `DROP TABLE IF EXISTS admins;`
 	DroppingUsersRolesTable = `DROP TABLE IF EXISTS users_roles;`
-	DroppingUsersTable = `DROP TABLE IF EXISTS applicants_users;`
+	DroppingUsersTable = `DROP TABLE IF EXISTS users;`
 
 )

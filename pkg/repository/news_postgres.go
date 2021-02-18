@@ -66,7 +66,7 @@ func (r *NewsPostgres) GetAllMiniNews() ([]models.MiniNews, error) {
 func (r *NewsPostgres) EditNews(id int, news models.News) error {
 	query := fmt.Sprintf("UPDATE news SET title=$1, short_desc=$2, expire_at=$3, full_desc=$4, Status=$5 WHERE id=$6")
 
-	_, err := r.db.Exec(query, news.Title, news.ShortDesc, news.ExpireAt, news.Img, news.FullDesc, news.Status, id)
+	_, err := r.db.Exec(query, news.Title, news.ShortDesc, news.ExpireAt,  news.FullDesc, news.Status, id)
 
 	if err != nil {
 		return err
