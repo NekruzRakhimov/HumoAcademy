@@ -29,6 +29,7 @@ type News interface {
 	ChangeNewsStatus (id int, status bool) error
 	ChangeNewsImg(id int, img string) error
 	GetNewsImgSrc (id int) (string, error)
+	CheckNewsExpireDate() error
 }
 
 type Admin interface {
@@ -40,7 +41,7 @@ type Admin interface {
 type User interface {
 	GetAllSubscribedUsers () ([]string, error)
 	CreateUser(user models.Users) (int, error)
-	GetAllUsers () ([]models.Users, error)
+	GetAllCourseUsers (courseId int) ([]models.Users, error)
 	DeleteUserByID (id int) error
 	GetUserById (id int) (models.Users, error)
 }

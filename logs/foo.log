@@ -1,2 +1,29 @@
-2021/02/18 19:44:03 server is listening port 8181
-2021/02/18 20:12:58 server is listening port 8181
+2021/02/19 16:32:46 server is listening port 8181
+2021/02/19 16:33:36 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:34:03 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:35:03 server is listening port 8181
+2021/02/19 16:35:23 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:36:24 Error while receiving multipart form. error is http: no such file
+2021/02/19 16:36:24 http: no such file%!(EXTRA string=)
+2021/02/19 16:36:59 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:37:11 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:39:10 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:52:01 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:52:05 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:52:07 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:52:09 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:52:10 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:52:12 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:52:14 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:52:16 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:52:17 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 16:52:19 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
+2021/02/19 17:20:54 server is listening port 8181
+2021/02/19 17:22:24 server is listening port 8181
+2021/02/19 17:23:00 server is listening port 8181
+2021/02/19 17:24:09 server is listening port 8181
+2021/02/19 17:25:22 server is listening port 8181
+2021/02/19 17:25:46 token is expired by 12h29m46s%!(EXTRA string=)
+2021/02/19 17:26:45 token is expired by 12h30m45s%!(EXTRA string=)
+2021/02/19 17:27:02 strconv.Atoi: parsing " 12": invalid syntax%!(EXTRA string=)
+2021/02/19 18:42:23 sql: no rows in result set%!(EXTRA string=)

@@ -7,6 +7,7 @@ import (
 	"HumoAcademy/pkg/service"
 	"HumoAcademy/schema"
 	"fmt"
+	"github.com/jasonlvhit/gocron"
 	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -14,13 +15,15 @@ import (
 )
 
 func main() {
+/****************************************************************************************************************************/
 	//logrus.SetFormatter(new(logrus.JSONFormatter)) //ошибки будут иметь формат json
 	if err := initConfig(); err != nil {
 		log.Fatalf("error while reading config file. Error is %s", err.Error())
 	}
-
+/****************************************************************************************************************************/
 	initLogs()
 
+/****************************************************************************************************************************/
 	database, err := repository.NewPostgresDB(repository.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
@@ -33,9 +36,18 @@ func main() {
 	if err != nil {
 		log.Fatalf("error while initializing schema. Error is %s", err.Error())
 	}
-
+/****************************************************************************************************************************/
 	//schema.DBDrop(database)
 	schema.DBInit(database)
+/****************************************************************************************************************************/
+	// Do jobs
+	err = gocron.Every(10).Minute().Do(service.News.CheckNewsExpireDate)
+	if err != nil {
+		log.Println("ERROR: while deleting expired news. Error is ", err.Error())
+	}
+	// Start all the pending jobs
+	<- gocron.Start()
+/****************************************************************************************************************************/
 
 	fmt.Println("server is listening port 8181")
 	log.Println("server is listening port 8181")
@@ -48,6 +60,7 @@ func main() {
 	if err := server.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 		log.Fatalf("error while running http server. Error is %s", err.Error())
 	}
+/****************************************************************************************************************************/
 }
 
 func initConfig() error {

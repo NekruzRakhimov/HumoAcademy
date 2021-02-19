@@ -22,14 +22,25 @@ func (s *UserService) GetAllSubscribedUsers () ([]string, error) {
 func (s *UserService) CreateUser(user models.Users) (int, error){
 	//generatePasswordHash(user.Password)
 	FLM := strings.Split(user.FirstName, " ") //FLM = ФИО
-	user.FirstName = FLM[0]
-	user.LastName = FLM[1]
-	user.MiddleName = FLM[2]
+	if len(FLM) == 3 {
+		user.FirstName = FLM[0]
+		user.LastName = FLM[1]
+		user.MiddleName = FLM[2]
+	} else if len(FLM) == 2 {
+		user.FirstName = FLM[0]
+		user.LastName = FLM[1]
+		user.MiddleName = ""
+	} else if len(FLM) == 1 {
+		user.FirstName = FLM[0]
+		user.LastName = ""
+		user.MiddleName = ""
+	}
+
 	return s.repo.CreateUser(user)
 }
 
-func (s *UserService) GetAllUsers () ([]models.Users, error) {
-	return s.repo.GetAllUsers()
+func (s *UserService) GetAllCourseUsers (courseId int) ([]models.Users, error) {
+	return s.repo.GetAllCourseUsers(courseId)
 }
 
 func (s *UserService)  DeleteUserByID (id int) error {

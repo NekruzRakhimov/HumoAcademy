@@ -83,3 +83,16 @@ func (r *NewsPostgres) ChangeNewsStatus (id int, status bool) error {
 	}
 	return nil
 }
+
+func (r *NewsPostgres) CheckNewsExpireDate(timeAtTheMoment int64) error {
+	query := fmt.Sprintf("UPDATE news SET status = false WHERE expire_at <= $1")
+	_, err := r.db.Exec(query, timeAtTheMoment)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+//func (r *NewsPostgres) DeleteExpiredNews (time string) error {
+//	query := fmt.Sprintf("DELETE FROM news WHERE expire_at")
+//}

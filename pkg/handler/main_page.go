@@ -11,7 +11,7 @@ func (h *Handler) getAll(c *gin.Context) {
 	content, err := h.services.MainPage.GetAll()
 
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 
@@ -30,13 +30,13 @@ func (h *Handler) getAll(c *gin.Context) {
 func (h *Handler) addUserForNews(c *gin.Context) {
 	var input models.SubscribedUsers
 	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
+		NewErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return
 	}
 
 	err := h.services.AddUserForNews(input)
 	if err != nil {
-		newErrorResponse(c, http.StatusUnprocessableEntity, "bad","this email already exists")
+		NewErrorResponse(c, http.StatusUnprocessableEntity, "bad","this email already exists")
 		return
 	}
 

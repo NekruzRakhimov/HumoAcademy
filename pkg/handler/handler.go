@@ -62,8 +62,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			}
 			users := admin.Group("/users", h.adminIdentity)
 			{
-				users.GET("/", h.getAllUsers)
-				users.GET("/:id", h.getUserById)
+				users.GET("/:course_id", h.getAllCourseUsers)
+				//users.GET("/:id", h.getUserById)
 			}
 
 		}

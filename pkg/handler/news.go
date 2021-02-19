@@ -19,7 +19,7 @@ const (
 func getNewsImg(c *gin.Context)  (string, error) {
 	img, err := c.FormFile("img")
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
+		NewErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return "", err
 	}
 
@@ -29,14 +29,14 @@ func getNewsImg(c *gin.Context)  (string, error) {
 
 	file, err := os.Create(imgPath)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return "", err
 	}
 	defer file.Close()
 
 	err = c.SaveUploadedFile(img, file.Name())
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return "", err
 	}
 	return imgPath, nil
@@ -47,7 +47,7 @@ func getNewsMainJson(c *gin.Context) (models.News, error) {
 
 	form, err := c.MultipartForm()
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
+		NewErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return models.News{}, err
 	}
 
@@ -57,7 +57,7 @@ func getNewsMainJson(c *gin.Context) (models.News, error) {
 	err = json.Unmarshal([]byte(mainJson[0]), &News)
 
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return models.News{}, err
 	}
 
@@ -68,7 +68,7 @@ func (h *Handler) getAllMiniNews (c *gin.Context) {
 
 	news, err := h.services.News.GetAllMiniNews()
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError,"bad" ,err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError,"bad" ,err.Error())
 		return
 	}
 	if news == nil {
@@ -80,25 +80,25 @@ func (h *Handler) getAllMiniNews (c *gin.Context) {
 func (h *Handler) createNews (c *gin.Context) {
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
 		return
 	}
 
 	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
 		return
 	}
 
 	imgPath, err := getNewsImg(c)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 
 	news, err := getNewsMainJson(c)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 	news.Img = imgPath
@@ -106,7 +106,7 @@ func (h *Handler) createNews (c *gin.Context) {
 	id, err := h.services.News.CreateNews(news)
 
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -118,13 +118,13 @@ func (h *Handler) createNews (c *gin.Context) {
 func (h *Handler) getNewsById (c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+		NewErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
 		return
 	}
 
 	news, err := h.services.News.GetNewsByID(id)
 	if err != nil {
-		newErrorResponse(c, http.StatusNotFound, "bad",err.Error())
+		NewErrorResponse(c, http.StatusNotFound, "bad",err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, news)
@@ -133,32 +133,32 @@ func (h *Handler) getNewsById (c *gin.Context) {
 func (h *Handler) editNews (c *gin.Context) {
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
 		return
 	}
 
 	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
 		return
 	}
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+		NewErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
 		return
 	}
 
 	var news models.News
 	err = c.BindJSON(&news)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 
 	err = h.services.News.EditNews(id, news)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 
@@ -171,19 +171,19 @@ func (h *Handler) editNews (c *gin.Context) {
 func (h *Handler) changeNewsStatus(c *gin.Context){
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
 		return
 	}
 
 	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
 		return
 	}
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+		NewErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
 		return
 	}
 
@@ -193,7 +193,7 @@ func (h *Handler) changeNewsStatus(c *gin.Context){
 	err = h.services.News.ChangeNewsStatus(id, status)
 
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -205,39 +205,39 @@ func (h *Handler) changeNewsStatus(c *gin.Context){
 func (h *Handler) changeNewsImg (c *gin.Context) {
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
 		return
 	}
 
 	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
 		return
 	}
 	/*****************************************************************************************************/
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+		NewErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
 		return
 	}
 	/*****************************************************************************************************/
 	imgSrc, err := h.services.News.GetNewsImgSrc(id)
 	err = deleteImg(imgSrc)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 	/*****************************************************************************************************/
 	imgPath, err := getNewsImg(c)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 
 	err = h.services.News.ChangeNewsImg(id, imgPath)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError,"bad", err.Error())
 		return
 	}
 

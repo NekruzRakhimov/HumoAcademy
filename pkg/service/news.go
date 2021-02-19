@@ -3,6 +3,7 @@ package service
 import (
 	"HumoAcademy/models"
 	"HumoAcademy/pkg/repository"
+	"time"
 )
 
 type NewsService struct {
@@ -39,4 +40,9 @@ func (s *NewsService) ChangeNewsImg(id int, img string) error {
 
 func (s *NewsService) GetNewsImgSrc (id int) (string, error) {
 	return s.repo.GetNewsImgSrc(id)
+}
+
+func (s *NewsService) CheckNewsExpireDate() error  {
+	timeAtTheMoment := time.Now().Unix()
+	return s.repo.CheckNewsExpireDate(timeAtTheMoment)
 }

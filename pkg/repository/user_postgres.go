@@ -36,10 +36,10 @@ func (r *UserPostgres) CreateUser (user models.Users) (int, error){
 	return id, nil
 }
 
-func (r *UserPostgres) GetAllUsers () ([]models.Users, error) {
+func (r *UserPostgres) GetAllCourseUsers (courseId int) ([]models.Users, error) {
 	var Users []models.Users
-	query := fmt.Sprintf("SELECT id, first_name, last_name, middle_name, email, about, cv, course_id FROM users ORDER BY id")
-	err := r.db.Select(&Users, query)
+	query := fmt.Sprintf("SELECT id, first_name, last_name, middle_name, email, about, cv, course_id FROM users WHERE course_id=$1 ORDER BY id")
+	err := r.db.Select(&Users, query, courseId)
 	if err != nil {
 		return []models.Users{}, err
 	}

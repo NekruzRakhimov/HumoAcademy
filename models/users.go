@@ -16,3 +16,10 @@ type SubscribedUsers struct {
 	Id int `json:"id"`
 	Email string `json:"email"`
 }
+
+type MSG struct {
+	Email string `json:"email"`
+	Password string `json:"password"`
+	Subject string `json:"subject"`
+	Message string `json:"message"`
+} 

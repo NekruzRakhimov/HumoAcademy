@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 )
@@ -14,7 +15,8 @@ type statusResponse struct {
 	Message string `json:"message"`
 }
 
-func newErrorResponse(c *gin.Context, statusCode int, status, message string) {
+func NewErrorResponse(c *gin.Context, statusCode int, status, message string) {
 	log.Printf(message, "")
+	fmt.Printf(message, "")
 	c.AbortWithStatusJSON(statusCode, statusResponse{status, message})
 }

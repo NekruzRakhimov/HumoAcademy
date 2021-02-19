@@ -20,19 +20,19 @@ const (
 func (h *Handler) getAllSubscribedUsers (c *gin.Context) {
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
 		return
 	}
 
 	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
 		return
 	}
 
 	emails, err := h.services.User.GetAllSubscribedUsers()
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		log.Println(err)
 		return
 	}
@@ -42,38 +42,34 @@ func (h *Handler) getAllSubscribedUsers (c *gin.Context) {
 	c.JSON(http.StatusOK, emails)
 }
 
-
 func (h *Handler) SendMail (c *gin.Context) {
-	//msg := []byte("hello!") //TODO: get from the body of the request
-	//
-	//auth := smtp.PlainAuth("", "namesurname10062001@mail.ru", "name_surname", "smtp.mail.ru")
-	////to, err := h.services.User.GetAllSubscribedUsers()
-	////if err != nil {
-	////	newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
-	////	log.Println(err)
-	////	return
-	////}
-	//to := []string{"nekruzusa111@gmail.com"}
-	//err := smtp.SendMail("smtp.mail.ru:25", auth, "namesurname10062001@mail.ru", to, msg)
-	//if err != nil {
-	//	newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
-	//	log.Println(err)
-	//	return
-	//}
-	// Set up authentication information.
-	auth := smtp.PlainAuth("", "namesurname10062001@mail.ru", "name_surname", "smtp.mail.ru")
+	var msg models.MSG
+	err := c.BindJSON(&msg)
 
-	// Connect to the server, authenticate, set the sender and recipient,
-	// and send the email all in one step.
-	to := []string{"nekruzusa111@gmail.com"}
-	msg := []byte(
-		//"To: recipient@example.net\r\n" +
-	"Subject: discount Gophers!\r\n" +
-	"\r\n" +
-	"This is the email body.\r\n")
-	err := smtp.SendMail("smtp.mail.ru:25", auth, "namesurname10062001@mail.ru", to, msg)
 	if err != nil {
-		log.Fatal(err)
+		NewErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
+		return
+	}
+
+	message := []byte(
+		fmt.Sprintf("Subject : %s", msg.Subject) +
+			"\r\n" +
+			msg.Message)
+
+	auth := smtp.PlainAuth("", msg.Email, msg.Password, "smtp.mail.ru")
+	to, err := h.services.User.GetAllSubscribedUsers()
+
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		log.Println(err)
+		return
+	}
+
+	err = smtp.SendMail("smtp.mail.ru:25", auth, msg.Email, to, message)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		log.Println(err)
+		return
 	}
 
 }
@@ -82,13 +78,13 @@ func (h *Handler) createUser (c *gin.Context) {
 
 	cvPath, err := getNewUsersCV(c)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return
 	}
 
 	user, err := getNewUserMainJson(c)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return
 	}
 	user.CV = cvPath
@@ -98,7 +94,7 @@ func (h *Handler) createUser (c *gin.Context) {
 	id, err := h.services.User.CreateUser(user)
 
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusUnprocessableEntity, "bad", err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -153,23 +149,29 @@ func getNewUserMainJson(c *gin.Context) (models.Users, error) {
 	return User, nil
 }
 
-func (h *Handler) getAllUsers (c *gin.Context) {
+func (h *Handler) getAllCourseUsers (c *gin.Context) {
 
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
 		return
 	}
 
 	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		return
+	}
+	courseIdString := c.Param("course_id")
+	courseIdInt, err := strconv.Atoi(courseIdString)
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return
 	}
 
-	users, err := h.services.User.GetAllUsers()
+	users, err := h.services.User.GetAllCourseUsers(courseIdInt)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
 	if users == nil {
@@ -181,19 +183,19 @@ func (h *Handler) getAllUsers (c *gin.Context) {
 func (h *Handler) deleteUserByID(c *gin.Context) {
 	_, err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad", "invalid admins id param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad", "invalid admins id param")
 		return
 	}
 
 	_, err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad", "invalid admins level param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad", "invalid admins level param")
 		return
 	}
 
 	//id, err := strconv.Atoi(c.Param("id"))
 	//if err != nil {
-	//	newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+	//	NewErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
 	//	return
 	//}
 }
@@ -202,25 +204,25 @@ func (h *Handler) getUserById (c *gin.Context) {
 
 	_ , err := getAdminId(c) //TODO: (adminId) check id
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins id param")
 		return
 	}
 
 	_ , err = getAdminLevel(c) //TODO: (adminLevel) check for admin level
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
+		NewErrorResponse(c, http.StatusUnauthorized, "bad","invalid admins level param")
 		return
 	}
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
+		NewErrorResponse(c, http.StatusBadRequest, "bad","invalid id param")
 		return
 	}
 
 	course, err := h.services.User.GetUserById(id)
 	if err != nil {
-		newErrorResponse(c, http.StatusNotFound, "bad", err.Error())
+		NewErrorResponse(c, http.StatusNotFound, "bad", err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, course)
