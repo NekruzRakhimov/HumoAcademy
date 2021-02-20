@@ -1,29 +1,35 @@
-2021/02/19 16:32:46 server is listening port 8181
-2021/02/19 16:33:36 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:34:03 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:35:03 server is listening port 8181
-2021/02/19 16:35:23 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:36:24 Error while receiving multipart form. error is http: no such file
-2021/02/19 16:36:24 http: no such file%!(EXTRA string=)
-2021/02/19 16:36:59 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:37:11 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:39:10 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:52:01 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:52:05 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:52:07 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:52:09 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:52:10 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:52:12 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:52:14 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:52:16 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:52:17 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 16:52:19 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"%!(EXTRA string=)
-2021/02/19 17:20:54 server is listening port 8181
-2021/02/19 17:22:24 server is listening port 8181
-2021/02/19 17:23:00 server is listening port 8181
-2021/02/19 17:24:09 server is listening port 8181
-2021/02/19 17:25:22 server is listening port 8181
-2021/02/19 17:25:46 token is expired by 12h29m46s%!(EXTRA string=)
-2021/02/19 17:26:45 token is expired by 12h30m45s%!(EXTRA string=)
-2021/02/19 17:27:02 strconv.Atoi: parsing " 12": invalid syntax%!(EXTRA string=)
-2021/02/19 18:42:23 sql: no rows in result set%!(EXTRA string=)
+2021/02/20 14:37:54 server is listening port 8181
+2021/02/20 14:56:07  Error while dropping table number 1. Error is: pq: удалить объект таблица courses нельзя, так как от него зависят другие объекты
+2021/02/20 15:08:38  Error while dropping table number 1. Error is: pq: удалить объект таблица courses нельзя, так как от него зависят другие объекты
+2021/02/20 15:09:11  Error while dropping table number 1. Error is: pq: удалить объект таблица courses нельзя, так как от него зависят другие объекты
+2021/02/20 15:10:02  Error while dropping table number 1. Error is: pq: удалить объект таблица courses нельзя, так как от него зависят другие объекты
+2021/02/20 15:10:25  Error while dropping table number 1. Error is: pq: удалить объект таблица courses нельзя, так как от него зависят другие объекты
+2021/02/20 15:14:07  Error while dropping table number 1. Error is: pq: удалить объект таблица courses нельзя, так как от него зависят другие объекты
+2021/02/20 15:15:37  Error while dropping table number 6. Error is: pq: удалить объект таблица courses нельзя, так как от него зависят другие объекты
+2021/02/20 15:17:52  Error while dropping table number 2. Error is: pq: удалить объект таблица courses нельзя, так как от него зависят другие объекты
+2021/02/20 15:18:52  Error while dropping table number 2. Error is: pq: удалить объект таблица courses нельзя, так как от него зависят другие объекты
+2021/02/20 15:19:44  Error while dropping table number 7. Error is: pq: удалить объект таблица courses нельзя, так как от него зависят другие объекты
+2021/02/20 15:20:44 server is listening port 8181
+2021/02/20 15:21:13 server is listening port 8181
+2021/02/20 15:21:33 server is listening port 8181
+2021/02/20 15:21:51 server is listening port 8181
+2021/02/20 15:31:57 pq: INSERT или UPDATE в таблице "users" нарушает ограничение внешнего ключа "users_course_id_fkey"%!(EXTRA string=)
+2021/02/20 15:32:02 token is expired by 10h6m7s%!(EXTRA string=)
+2021/02/20 15:33:05 sql: no rows in result set%!(EXTRA string=)
+2021/02/20 15:40:56 server is listening port 8181
+2021/02/20 15:41:06 server is listening port 8181
+2021/02/20 16:12:13 server is listening port 8181
+2021/02/20 16:12:31  Error while creating table number 6. Error is: pq: ошибка синтаксиса (примерное положение: "(")
+2021/02/20 16:12:55 server is listening port 8181
+2021/02/20 16:13:36 pq: INSERT или UPDATE в таблице "users" нарушает ограничение внешнего ключа "users_course_id_fkey"%!(EXTRA string=)
+2021/02/20 16:13:51 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_course_id_key"%!(EXTRA string=)
+2021/02/20 16:14:24 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_course_id_key"%!(EXTRA string=)
+2021/02/20 16:21:21  Error while creating table number 6. Error is: pq: ошибка синтаксиса (примерное положение: "ON")
+2021/02/20 16:23:43 server is listening port 8181
+2021/02/20 16:24:19 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_course_id_key"%!(EXTRA string=)
+2021/02/20 16:24:19 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_course_id_key"%!(EXTRA string=)
+2021/02/20 16:31:25 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_course_id_key"%!(EXTRA string=)
+2021/02/20 16:31:36 pq: INSERT или UPDATE в таблице "users" нарушает ограничение внешнего ключа "users_course_id_fkey"%!(EXTRA string=)
+2021/02/20 16:34:17 server is listening port 8181
+2021/02/20 16:34:21 empty auth header%!(EXTRA string=)
+2021/02/20 16:35:14 token is expired by 11h9m19s%!(EXTRA string=)

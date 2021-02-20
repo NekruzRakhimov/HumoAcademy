@@ -64,6 +64,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			{
 				users.GET("/:course_id", h.getAllCourseUsers)
 				//users.GET("/:id", h.getUserById)
+				users.DELETE("/:id", h.deleteUserById)
 			}
 
 		}

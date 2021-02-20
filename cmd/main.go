@@ -40,15 +40,6 @@ func main() {
 	//schema.DBDrop(database)
 	schema.DBInit(database)
 /****************************************************************************************************************************/
-	// Do jobs
-	err = gocron.Every(10).Minute().Do(service.News.CheckNewsExpireDate)
-	if err != nil {
-		log.Println("ERROR: while deleting expired news. Error is ", err.Error())
-	}
-	// Start all the pending jobs
-	<- gocron.Start()
-/****************************************************************************************************************************/
-
 	fmt.Println("server is listening port 8181")
 	log.Println("server is listening port 8181")
 
@@ -60,6 +51,14 @@ func main() {
 	if err := server.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 		log.Fatalf("error while running http server. Error is %s", err.Error())
 	}
+/****************************************************************************************************************************/
+	// Do jobs
+	err = gocron.Every(10).Minute().Do(service.News.CheckNewsExpireDate)
+	if err != nil {
+		log.Println("ERROR: while deleting expired news. Error is ", err.Error())
+	}
+	// Start all the pending jobs
+	<- gocron.Start()
 /****************************************************************************************************************************/
 }
 

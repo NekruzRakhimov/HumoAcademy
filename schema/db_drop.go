@@ -13,6 +13,7 @@ func DBDrop(database *sqlx.DB) {
 		if err != nil {
 			log.Fatalf(" Error while dropping table number %d. Error is: %s", i, err)
 		}
+		i++
 	}
-	i++
+
 }

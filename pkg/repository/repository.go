@@ -42,6 +42,7 @@ type User interface {
 	GetAllCourseUsers (courseId int) ([]models.Users, error)
 	DeleteUserByID (id int) error
 	GetUserById (id int) (models.Users, error)
+	//GetUserByEmailAndCourseID (email string, courseID int) ([]models.Users, error)
 
 }
 

@@ -46,6 +46,17 @@ func (r *UserPostgres) GetAllCourseUsers (courseId int) ([]models.Users, error) 
 	return Users, err
 }
 
+//func (r *UserPostgres) GetUserByEmailAndCourseID (email string, courseID int) (models.Users, error) {
+//	var user models.Users
+//	query := fmt.Sprintf("SELECT id, first_name, last_name, middle_name, email, about, cv, course_id FROM users WHERE email=$1 AND course_id=$2")
+//	row := r.db.QueryRow(query, email, courseID)
+//	err := row.Scan(&user)
+//	if err != nil {
+//		return models.Users{}, err
+//	}
+//	return user, err
+//}
+
 func (r *UserPostgres) GetUserById (id int) (models.Users, error) {
 	var user models.Users
 	mainQuery := fmt.Sprintf("SELECT * FROM users WHERE id=$1")

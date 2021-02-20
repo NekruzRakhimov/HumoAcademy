@@ -2,8 +2,8 @@ package schema
 
 //arrays of DDLs
 var (
-	CreatingDDLs = []string {CreatingCoursesTable, CreatingNewsTable, CreatingSubscribedUsersTable, CreatingAdminsLevelTable, CreatingAdminsTable, CreatingUsersRolesTable, CreatingUsersTable}
-	DroppingDDLs = []string {DroppingUsersTable, DroppingCoursesTable, DroppingNewsTable, DroppingAdminsTable, DroppingAdminsLevelTable, DroppingUsersRolesTable, DroppingSubscribedUsersTable}
+	CreatingDDLs = []string {CreatingCoursesTable, CreatingNewsTable, CreatingSubscribedUsersTable, CreatingAdminsLevelTable, CreatingAdminsTable, CreatingUsersTable}
+	DroppingDDLs = []string {DroppingUsersTable, DroppingNewsTable, DroppingAdminsTable, DroppingAdminsLevelTable, DroppingUsersRolesTable, DroppingSubscribedUsersTable, DroppingCoursesTable}
 )
 
 //Creating tables
@@ -53,24 +53,18 @@ CreatingAdminsTable = `CREATE TABLE IF NOT EXISTS admins
 	UNIQUE(username)
 );`
 
-CreatingUsersRolesTable = `CREATE TABLE IF NOT EXISTS users_roles
-(
-	id SERIAL NOT NULL UNIQUE PRIMARY KEY,
-	role VARCHAR(255) NOT NULL
-);`
-
 CreatingUsersTable = `CREATE TABLE IF NOT EXISTS users
 (
 	id SERIAL NOT NULL UNIQUE PRIMARY KEY,
 	first_name VARCHAR(255) NOT NULL,
 	last_name VARCHAR(255) NOT NULL,
 	middle_name VARCHAR(255),
-	email VARCHAR(255) UNIQUE NOT NULL,
+	email VARCHAR(255) NOT NULL,
 	about TEXT NOT NULL,
 	cv VARCHAR(255) NOT NULL,
-	course_id SERIAL NOT NULL REFERENCES courses(id)
+	course_id SERIAL REFERENCES courses(id) ON DELETE CASCADE NOT NULL ,
+	UNIQUE(email, course_id)
 );`
-
 )
 
 //Dropping tables
@@ -82,5 +76,4 @@ const (
 	DroppingAdminsTable = `DROP TABLE IF EXISTS admins;`
 	DroppingUsersRolesTable = `DROP TABLE IF EXISTS users_roles;`
 	DroppingUsersTable = `DROP TABLE IF EXISTS users;`
-
 )
