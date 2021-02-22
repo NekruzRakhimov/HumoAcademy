@@ -17,3 +17,8 @@ type MiniCourses struct {
 	CourseDurance string `json:"course_durance" db:"course_durance"`
 	Status bool `json:"status"`
 }
+
+type CourseUsersList struct {
+	Title string `json:"title"`
+	UsersList []Users `json:"users_list"`
+}

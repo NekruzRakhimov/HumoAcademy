@@ -2,13 +2,11 @@ package models
 
 type Users struct {
 	Id int `json:"id"`
-	FirstName string `json:"first_name" db:"first_name"`
-	LastName string `json:"last_name" db:"last_name"`
-	MiddleName string `json:"middle_name" db:"middle_name"`
+	FullName string `json:"full_name" db:"full_name"`
 	Email string `json:"email"`
 	About string `json:"about"`
 	CV string `json:"cv"`
-	CourseId int `json:"course_id" db:"course_id"`
+	CourseId int `json:"course_id,omitempty" db:"course_id"`
 	//Password string `json:"password" db:"password_hash"`
 }
 

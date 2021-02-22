@@ -56,9 +56,7 @@ CreatingAdminsTable = `CREATE TABLE IF NOT EXISTS admins
 CreatingUsersTable = `CREATE TABLE IF NOT EXISTS users
 (
 	id SERIAL NOT NULL UNIQUE PRIMARY KEY,
-	first_name VARCHAR(255) NOT NULL,
-	last_name VARCHAR(255) NOT NULL,
-	middle_name VARCHAR(255),
+	full_name VARCHAR(255) NOT NULL,
 	email VARCHAR(255) NOT NULL,
 	about TEXT NOT NULL,
 	cv VARCHAR(255) NOT NULL,

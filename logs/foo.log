@@ -34,3 +34,31 @@
 2021/02/20 16:34:21 empty auth header%!(EXTRA string=)
 2021/02/20 16:35:14 token is expired by 11h9m19s%!(EXTRA string=)
 2021/02/20 17:01:24 server is listening port 8181
+2021/02/22 14:31:52 server is listening port 8181
+2021/02/22 14:34:51 token is expired by 82h14m28s%!(EXTRA string=)
+2021/02/22 15:03:26 server is listening port 8181
+2021/02/22 15:07:02 server is listening port 8181
+2021/02/22 15:08:09 token is expired by 35h26m16s%!(EXTRA string=)
+2021/02/22 15:09:04 server is listening port 8181
+2021/02/22 15:10:40 server is listening port 8181
+2021/02/22 15:16:31 server is listening port 8181
+2021/02/22 15:16:57 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_course_id_key"%!(EXTRA string=)
+2021/02/22 15:47:04 server is listening port 8181
+2021/02/22 16:26:24 server is listening port 8181
+2021/02/22 16:35:30 Error while receiving multipart form. error is http: no such file
+2021/02/22 16:35:30 http: no such file%!(EXTRA string=)
+2021/02/22 16:35:34 Error while receiving multipart form. error is http: no such file
+2021/02/22 16:35:34 http: no such file%!(EXTRA string=)
+2021/02/22 16:35:35 Error while receiving multipart form. error is http: no such file
+2021/02/22 16:35:35 http: no such file%!(EXTRA string=)
+2021/02/22 18:47:53 server is listening port 8181
+2021/02/22 19:56:59 EOF%!(EXTRA string=)
+2021/02/22 19:56:59 EOF
+2021/02/22 19:57:20 EOF%!(EXTRA string=)
+2021/02/22 19:57:20 EOF
+2021/02/22 19:58:01 server is listening port 8181
+2021/02/22 19:59:58 EOF%!(EXTRA string=)
+2021/02/22 19:59:58 EOF
+2021/02/22 20:00:19 EOF%!(EXTRA string=)
+2021/02/22 20:00:19 EOF
+2021/02/22 20:00:42 server is listening port 8181

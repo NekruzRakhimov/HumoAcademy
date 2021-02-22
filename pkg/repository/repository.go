@@ -39,7 +39,7 @@ type Admin interface {
 type User interface {
 	GetAllSubscribedUsers() ([]string, error)
 	CreateUser(user models.Users) (int, error)
-	GetAllCourseUsers (courseId int) ([]models.Users, error)
+	GetAllCourseUsers (courseId int) (models.CourseUsersList, error)
 	DeleteUserByID (id int) error
 	GetUserById (id int) (models.Users, error)
 	//GetUserByEmailAndCourseID (email string, courseID int) ([]models.Users, error)

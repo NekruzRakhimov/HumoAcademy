@@ -45,7 +45,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			admin.POST("/sign-in", h.adminSignIn)
 			admin.GET("/subscribed-users", h.adminIdentity, h.getAllSubscribedUsers)
-			admin.POST("/send-mail", h.adminIdentity, h.SendMail)
+			admin.POST("/sms-mailing", h.adminIdentity, h.SendMail)
 			courses := admin.Group("/courses", h.adminIdentity)
 			{
 				courses.POST("/", h.createCourse)

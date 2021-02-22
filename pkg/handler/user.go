@@ -96,6 +96,7 @@ func (h *Handler) SendMail (c *gin.Context) {
 		NewErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return
 	}
+	fmt.Println(msg)
 
 	message := []byte(
 		fmt.Sprintf("Subject : %s", msg.Subject) +
@@ -117,6 +118,10 @@ func (h *Handler) SendMail (c *gin.Context) {
 		log.Println(err)
 		return
 	}
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"status": "ok",
+		"message": "sms mailing was successfully completed",
+	})
 
 }
 
@@ -169,15 +174,15 @@ func (h *Handler) getAllCourseUsers (c *gin.Context) {
 		return
 	}
 
-	users, err := h.services.User.GetAllCourseUsers(courseIdInt)
+	usersList, err := h.services.User.GetAllCourseUsers(courseIdInt)
 	if err != nil {
 		NewErrorResponse(c, http.StatusInternalServerError, "bad", err.Error())
 		return
 	}
-	if users == nil {
-		users = []models.Users{}
+	if usersList.UsersList == nil {
+		usersList.UsersList = []models.Users{}
 	}
-	c.JSON(http.StatusOK, users)
+	c.JSON(http.StatusOK, usersList)
 }
 
 func (h *Handler) getUserById (c *gin.Context) {
