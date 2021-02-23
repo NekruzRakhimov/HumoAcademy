@@ -2,66 +2,63 @@ package handler
 
 import (
 	"HumoAcademy/models"
-	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"net/smtp"
-	"os"
 	"strconv"
-	"time"
 )
 
 const (
 	UsersCVDirectory = `images/users_cv/%s_%s`
 )
 
-func getNewUsersCV(c *gin.Context) (string, error) {
-	cv, err := c.FormFile("cv")
-	if err != nil {
-		log.Println("Error while receiving multipart form. error is", err.Error())
-		return "", err
-	}
-
-	timeSign := fmt.Sprintf("%d",time.Now().UnixNano())
-
-	cvPath := fmt.Sprintf(UsersCVDirectory, timeSign, cv.Filename)
-
-	file, err := os.Create(cvPath)
-	if err != nil {
-		log.Println("Error while creating file for cv.", err.Error())
-		return "", err
-	}
-	defer file.Close()
-
-	err = c.SaveUploadedFile(cv, file.Name())
-	if err != nil {
-		log.Println("Error while saving the cv.", err.Error())
-		return "", err
-	}
-	return cvPath, nil
-}
-
-func getNewUserMainJson(c *gin.Context) (models.Users, error) {
-	var User models.Users
-
-	form, err := c.MultipartForm()
-	if err != nil {
-		log.Println("Error while receiving multipart form. error is", err.Error())
-		return models.Users{}, err
-	}
-
-	mainJson := form.Value["main_json"]
-
-	err = json.Unmarshal([]byte(mainJson[0]), &User)
-	if err != nil {
-		log.Println("json unmarshal error:", err.Error())
-		return models.Users{}, err
-	}
-
-	return User, nil
-}
+//func getNewUsersCV(c *gin.Context) (string, error) {
+//	cv, err := c.FormFile("cv")
+//	if err != nil {
+//		log.Println("Error while receiving multipart form. error is", err.Error())
+//		return "", err
+//	}
+//
+//	timeSign := fmt.Sprintf("%d",time.Now().UnixNano())
+//
+//	cvPath := fmt.Sprintf(UsersCVDirectory, timeSign, cv.Filename)
+//
+//	file, err := os.Create(cvPath)
+//	if err != nil {
+//		log.Println("Error while creating file for cv.", err.Error())
+//		return "", err
+//	}
+//	defer file.Close()
+//
+//	err = c.SaveUploadedFile(cv, file.Name())
+//	if err != nil {
+//		log.Println("Error while saving the cv.", err.Error())
+//		return "", err
+//	}
+//	return cvPath, nil
+//}
+//
+//func getNewUserMainJson(c *gin.Context) (models.Users, error) {
+//	var User models.Users
+//
+//	form, err := c.MultipartForm()
+//	if err != nil {
+//		log.Println("Error while receiving multipart form. error is", err.Error())
+//		return models.Users{}, err
+//	}
+//
+//	mainJson := form.Value["main_json"]
+//
+//	err = json.Unmarshal([]byte(mainJson[0]), &User)
+//	if err != nil {
+//		log.Println("json unmarshal error:", err.Error())
+//		return models.Users{}, err
+//	}
+//
+//	return User, nil
+//}
 
 func (h *Handler) getAllSubscribedUsers (c *gin.Context) {
 	_ , err := getAdminId(c) //TODO: (adminId) check id
@@ -126,21 +123,12 @@ func (h *Handler) SendMail (c *gin.Context) {
 }
 
 func (h *Handler) createUser (c *gin.Context) {
-
-	cvPath, err := getNewUsersCV(c)
+	var user models.Users
+	err := c.BindJSON(&user)
 	if err != nil {
 		NewErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
 		return
 	}
-
-	user, err := getNewUserMainJson(c)
-	if err != nil {
-		NewErrorResponse(c, http.StatusBadRequest, "bad", err.Error())
-		return
-	}
-	user.CV = cvPath
-
-
 
 	id, err := h.services.User.CreateUser(user)
 

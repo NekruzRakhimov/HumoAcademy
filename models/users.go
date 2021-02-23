@@ -4,8 +4,8 @@ type Users struct {
 	Id int `json:"id"`
 	FullName string `json:"full_name" db:"full_name"`
 	Email string `json:"email"`
+	Phone string `json:"phone"`
 	About string `json:"about"`
-	CV string `json:"cv"`
 	CourseId int `json:"course_id,omitempty" db:"course_id"`
 	//Password string `json:"password" db:"password_hash"`
 }

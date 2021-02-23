@@ -26,9 +26,9 @@ func (r *UserPostgres) GetAllSubscribedUsers () ([]string, error) {
 
 func (r *UserPostgres) CreateUser (user models.Users) (int, error){
 	var id int
-	query := fmt.Sprintf("INSERT INTO users (full_name, email, about, cv, course_id) values ($1, $2, $3, $4, $5) RETURNING id")
+	query := fmt.Sprintf("INSERT INTO users (full_name, email, phone, about, course_id) values ($1, $2, $3, $4, $5) RETURNING id")
 
-	row := r.db.QueryRow(query, user.FullName, user.Email, user.About, user.CV, user.CourseId)
+	row := r.db.QueryRow(query, user.FullName, user.Email, user.Phone, user.About, user.CourseId)
 	if err := row.Scan(&id); err != nil {
 		return 0, err
 	}
@@ -38,7 +38,7 @@ func (r *UserPostgres) CreateUser (user models.Users) (int, error){
 
 func (r *UserPostgres) GetAllCourseUsers (courseId int) (models.CourseUsersList, error) {
 	var UsersList models.CourseUsersList
-	queryUsersList := fmt.Sprintf("SELECT id, full_name, email, about, cv FROM users WHERE course_id=$1 ORDER BY id")
+	queryUsersList := fmt.Sprintf("SELECT id, full_name, email, phone, about FROM users WHERE course_id=$1 ORDER BY id")
 	err := r.db.Select(&UsersList.UsersList, queryUsersList, courseId)
 	if err != nil {
 		return models.CourseUsersList{}, err

@@ -58,10 +58,10 @@ CreatingUsersTable = `CREATE TABLE IF NOT EXISTS users
 	id SERIAL NOT NULL UNIQUE PRIMARY KEY,
 	full_name VARCHAR(255) NOT NULL,
 	email VARCHAR(255) NOT NULL,
+	phone VARCHAR(255) NOT NULL,
 	about TEXT NOT NULL,
-	cv VARCHAR(255) NOT NULL,
 	course_id SERIAL REFERENCES courses(id) ON DELETE CASCADE NOT NULL ,
-	UNIQUE(email, course_id)
+	UNIQUE(email, phone, course_id)
 );`
 )
 

@@ -62,3 +62,39 @@
 2021/02/22 20:00:19 EOF%!(EXTRA string=)
 2021/02/22 20:00:19 EOF
 2021/02/22 20:00:42 server is listening port 8181
+2021/02/23 09:43:59 server is listening port 8181
+2021/02/23 09:45:20 token is expired by 78h45m21s%!(EXTRA string=)
+2021/02/23 09:56:03 main_json [{"status":true,"title":"Заголовок для новостей","short_desc":"","full_desc":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis vel inventore dolor officiis delectus, consequatur praesentium quia. Suscipit sunt dolor consectetur perspiciatis omnis exercitationem. Hic ex adipisci quis laborum cupiditate!","expire_at":"2021-02-24T10:00"}]
+2021/02/23 09:56:03 json: cannot unmarshal string into Go struct field News.expire_at of type int64%!(EXTRA string=)
+2021/02/23 09:56:03 json: cannot unmarshal string into Go struct field News.expire_at of type int64%!(EXTRA string=)
+2021/02/23 09:57:38 main_json [{"status":true,"title":"a","short_desc":"","full_desc":"a","expire_at":""}]
+2021/02/23 09:57:38 json: cannot unmarshal string into Go struct field News.expire_at of type int64%!(EXTRA string=)
+2021/02/23 09:57:38 json: cannot unmarshal string into Go struct field News.expire_at of type int64%!(EXTRA string=)
+2021/02/23 09:59:01 main_json [{"status":true,"title":"a","short_desc":"","full_desc":"a","expire_at":""}]
+2021/02/23 09:59:01 json: cannot unmarshal string into Go struct field News.expire_at of type int64%!(EXTRA string=)
+2021/02/23 09:59:01 json: cannot unmarshal string into Go struct field News.expire_at of type int64%!(EXTRA string=)
+2021/02/23 09:59:47 main_json [{"status":true,"title":"a","short_desc":"","full_desc":"a","expire_at":""}]
+2021/02/23 09:59:47 json: cannot unmarshal string into Go struct field News.expire_at of type int64%!(EXTRA string=)
+2021/02/23 09:59:47 json: cannot unmarshal string into Go struct field News.expire_at of type int64%!(EXTRA string=)
+2021/02/23 09:59:55 main_json [{"status":true,"title":"a","short_desc":"","full_desc":"a","expire_at":"2021-02-23T09:59"}]
+2021/02/23 09:59:55 json: cannot unmarshal string into Go struct field News.expire_at of type int64%!(EXTRA string=)
+2021/02/23 09:59:55 json: cannot unmarshal string into Go struct field News.expire_at of type int64%!(EXTRA string=)
+2021/02/23 10:00:38 main_json [{"status":true,"title":"a","short_desc":"","full_desc":"a","expire_at":1614056438858}]
+2021/02/23 10:07:10 json: cannot unmarshal string into Go struct field News.expire_at of type int64%!(EXTRA string=)
+2021/02/23 10:51:24 json: cannot unmarshal string into Go struct field News.expire_at of type int64%!(EXTRA string=)
+2021/02/23 10:53:20 main_json [{"status":true,"title":"Lorem ipsum dolor sit amet consectetur adipisicing elit.","short_desc":"Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, molestiae!","full_desc":"Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, molestiae!Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, molestiae!Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, molestiae!Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, molestiae!Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, molestiae!Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, molestiae!Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, molestiae!","expire_at":1614059599944}]
+2021/02/23 13:18:14 EOF%!(EXTRA string=)
+2021/02/23 13:18:14 EOF
+2021/02/23 13:18:35 EOF%!(EXTRA string=)
+2021/02/23 13:18:35 EOF
+2021/02/23 16:34:47 server is listening port 8181
+2021/02/23 16:34:49 pq: INSERT содержит больше выражений, чем целевых столбцов%!(EXTRA string=)
+2021/02/23 16:39:55 server is listening port 8181
+2021/02/23 16:40:47 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_phone_course_id_key"%!(EXTRA string=)
+2021/02/23 16:41:07 pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_phone_course_id_key"%!(EXTRA string=)
+2021/02/23 17:10:48 server is listening port 8181
+2021/02/23 17:12:41 invalid id param%!(EXTRA string=)
+2021/02/23 17:13:47 strconv.Atoi: parsing "tel:+992999999999": invalid syntax%!(EXTRA string=)
+2021/02/23 17:14:16 strconv.Atoi: parsing "tel:+992999999999": invalid syntax%!(EXTRA string=)
+2021/02/23 17:14:22 strconv.Atoi: parsing "tel:+992999999999": invalid syntax%!(EXTRA string=)
+2021/02/23 17:14:25 strconv.Atoi: parsing "tel:+992999999999": invalid syntax%!(EXTRA string=)
